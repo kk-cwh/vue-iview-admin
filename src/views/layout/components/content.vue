@@ -62,13 +62,16 @@ export default {
 
 <style lang="less" scoped>
 .layout-content {
-  flex: 1 0 800px;
+  position: absolute;
   background: #fff;
-  
+  left: 200px;
+  right: 0;
+  bottom: 0;
+  height: 100%;
   .container {
     display: flex; /*设为伸缩容器*/
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     overflow-y: auto;
     .container-header {
       flex: 0 0 64px;

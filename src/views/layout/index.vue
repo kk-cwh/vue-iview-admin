@@ -51,7 +51,7 @@ export default {
   height: 100%;
   margin: 0 auto;
   background: #ff8e6c;
-  display: flex;
+  // display: flex;
 }
 // .layout {
 //   width: 100%;
