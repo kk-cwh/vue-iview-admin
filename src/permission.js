@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch(err => { // 拉取用户信息失败，提示登录状态失效
           store.dispatch('FedLogOut').then(() => {
-            Message.error('登录状态失效, 请重新登录');
+         
             next({ path: '/login' });
           })
         })
