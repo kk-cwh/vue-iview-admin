@@ -10,23 +10,32 @@ import login from '@/views/login';
   }
 **/
 
+const layout = () => import(/* webpackChunkName: "group-index" */ '@/views/layout');
 
 export const constantRouterMap = [
   { path: '/login', name: 'login', meta: { title: "系统登录", hidden: true }, component: login },
- 
+  ,{
+    path: '/',
+    name: 'main',
+    // redirect: '/dashboard',
+    // hidden: true,
+    component: layout,
+    // children: [
+    //   { path: 'dashboard', name: 'dashboard', meta: { title: "仪表盘" }, component: () => import(/* webpackChunkName: "group-index" */'@/views/layout') }
+    // ]
+  },
 ]
 
 
-const layout = () => import(/* webpackChunkName: "group-index" */ '@/views/layout');
 export const asyncRouterMap = [
   {
     path: '/',
     name: 'main',
     redirect: '/dashboard',
     hidden: true,
-    component: layout,
+    // component: layout,
     children: [
-      { path: 'dashboard', name: 'dashboard', meta: { title: "仪表盘" }, component: () => import(/* webpackChunkName: "group-index" */'@/views/login') }
+      { path: 'dashboard', name: 'dashboard', meta: { title: "仪表盘" }, component: () => import(/* webpackChunkName: "group-index" */'@/views/layout') }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

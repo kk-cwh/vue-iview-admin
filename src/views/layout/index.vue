@@ -1,16 +1,19 @@
-<!-- 上中下布局 -->
 <template>
   <div class="layout">
-    <layout-header></layout-header>
-    <layout-content>
-      <sidebar slot="left"></sidebar>
-      <router-view slot="content" v-loading="routerLoading"></router-view>
-    </layout-content>
-    <layuot-footer>
-      <a class="footer-content" href="https://github.com/calebman/vue-DBM">
+     <sidebar></sidebar>
+     <layout-content>
+        <layout-header solt="header"></layout-header>
+        <router-view slot="main" ></router-view>
+
+        <layuot-footer slot="footer">
+        <a class="footer-content" href="https://github.com/calebman/vue-DBM">
         点此进入代码仓库
       </a>
     </layuot-footer>
+    </layout-content>
+   
+    
+  
   </div>
 </template>
 
@@ -47,12 +50,13 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  background: #f5f7f9;
-  .footer-content {
-    font-weight: 400;
-    font-size: 15px;
-    color: #1c86ee;
-    text-decoration: none;
-  }
+  background: #ff8e6c;
+  display: flex;
 }
+// .layout {
+//   width: 100%;
+//   height: 100%;
+//   margin: 0 auto;
+//   background: #f5f7f9;
+// }
 </style>
