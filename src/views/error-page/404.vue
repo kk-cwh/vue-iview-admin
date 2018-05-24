@@ -79,5 +79,5 @@ import { myMixin } from './mixin.js'
 export default {
     name: 'Error404',
     mixins: [myMixin]
-};
+}
 </script>
