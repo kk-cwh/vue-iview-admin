@@ -3,24 +3,33 @@
   <div class="layout-content">
     <div class="container">
       <div class="container-header">
-        <slot name="header"></slot>
+        <layout-header></layout-header>
       </div>
       <div class="container-main">
-       <slot name="main"></slot>
-    
+        <slot name="main"></slot>
       </div>
       <div class="container-footer">
-       <slot name="footer"></slot>
-    
+        <layuot-footer>
+          <a class="footer-content" href="https://github.com/calebman/vue-DBM">
+            点此进入代码仓库
+          </a>
+        </layuot-footer>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import layoutHeader from "./header";
+import layuotFooter from "./footer";
 export default {
   name: "content",
-  components: {},
+  components: {
+    layoutHeader,
+
+    layuotFooter
+  },
   data() {
     return {
       breadcrumbItems: []
@@ -74,9 +83,9 @@ export default {
     height: 100%;
     overflow-y: auto;
     .container-header {
-      flex: 0 0 64px;
+      flex: 0 0 60px;
       text-align: left;
-       border: 1px solid rgb(250, 105, 79);
+      border: 1px solid rgb(250, 105, 79);
     }
     .container-main {
       flex: 1 0 300px;
@@ -84,8 +93,8 @@ export default {
       border: 1px solid rgb(250, 105, 79);
       overflow-y: auto;
     }
-    .container-footer{
-     flex: 0 0 64px;
+    .container-footer {
+      flex: 0 0 64px;
       border: 1px solid rgb(250, 105, 79);
     }
   }

@@ -1,4 +1,4 @@
-import login from '@/views/login';
+import login from '@/views/login'
 
 /**
 * hidden: true                   如果hidden为true则不在左侧菜单栏展示，默认为false
@@ -10,32 +10,24 @@ import login from '@/views/login';
   }
 **/
 
-const layout = () => import(/* webpackChunkName: "group-index" */ '@/views/layout');
+const layout = () => import(/* webpackChunkName: "group-index" */ '@/views/layout')
 
 export const constantRouterMap = [
-  { path: '/login', name: 'login', meta: { title: "系统登录", hidden: true }, component: login },
-  ,{
-    path: '/',
-    name: 'main',
-    // redirect: '/dashboard',
-    // hidden: true,
-    component: layout,
-    // children: [
-    //   { path: 'dashboard', name: 'dashboard', meta: { title: "仪表盘" }, component: () => import(/* webpackChunkName: "group-index" */'@/views/layout') }
-    // ]
-  },
+  { path: '/login', name: 'login', hidden: true, meta: { title: '系统登录' }, component: login }
 ]
-
 
 export const asyncRouterMap = [
   {
     path: '/',
     name: 'main',
-    redirect: '/dashboard',
-    hidden: true,
-    // component: layout,
+    redirect: '/home',
+    // hidden: true,
+    meta: { title: '仪表盘', icon: 'ios-paw' },
+    component: layout,
     children: [
-      { path: 'dashboard', name: 'dashboard', meta: { title: "仪表盘" }, component: () => import(/* webpackChunkName: "group-index" */'@/views/layout') }
+      { path: 'home1', name: 'home1', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') },
+
+      { path: 'home', name: 'home', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

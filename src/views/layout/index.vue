@@ -2,14 +2,7 @@
   <div class="layout">
      <sidebar></sidebar>
      <layout-content>
-        <layout-header solt="header"></layout-header>
         <router-view slot="main" ></router-view>
-
-        <layuot-footer slot="footer">
-        <a class="footer-content" href="https://github.com/calebman/vue-DBM">
-        点此进入代码仓库
-      </a>
-    </layuot-footer>
     </layout-content>
    
     
@@ -18,16 +11,12 @@
 </template>
 
 <script>
-import layoutHeader from "./components/header";
 import layoutContent from "./components/content";
-import layuotFooter from "./components/footer";
 import sidebar from "./components/sidebar";
 export default {
   name: "layout",
   components: {
-    layoutHeader,
     layoutContent,
-    layuotFooter,
     sidebar
   },
   data() {

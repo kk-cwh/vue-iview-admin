@@ -1,33 +1,39 @@
 <template>
   <div class="hello">
-  
-      <qrcode :value="msg" :options="{
+
+    <qrcode :value="msg" :options="{
        background: 'green',
   backgroundAlpha: 0.5,
   foreground: 'blue',
   foregroundAlpha: 0.8,
   level: 'H',
   size: 200	}" tag="img"></qrcode>
-
-
-
+ <Button type="primary" @click="login">Primary</Button>
   </div>
 </template>
 
 <script>
-import VueQrcode from '@xkeshi/vue-qrcode'
+import VueQrcode from "@xkeshi/vue-qrcode";
 
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   components: {
     qrcode: VueQrcode
   },
-  data () {
+  data() {
     return {
-      msg: 'https://vuejs.org?Welcome to Your Vue.js App'
+      msg: "https://vuejs.org?Welcome to Your Vue.js App"
+    };
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("Login").then(() => {
+        console.log('login success')
+        this.$router.push({name:'home'})
+      });
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

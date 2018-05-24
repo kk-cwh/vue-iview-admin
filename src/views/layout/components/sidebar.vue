@@ -1,72 +1,49 @@
 <!-- 底部布局 -->
 <template>
-<div class="layout-sider">
- 
-     <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
-                <Submenu name="1">
+    <div class="layout-sider">
+        <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+            <template v-for="item in menuList">
+                <MenuItem v-if="!item.hidden && item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
+                <Icon :type="item.meta.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
+                <span class="layout-text" :key="'title' + item.name">{{ item.children[0].name }}</span>
+                </MenuItem>
+
+                <Submenu v-if="!item.hidden && item.children.length > 1" :name="item.name" :key="item.name">
                     <template slot="title">
-                        <Icon type="ios-navigate"></Icon>
-                        Item 1
+                        <Icon :type="item.meta.icon" :size="iconSize"></Icon>
+                        <span class="layout-text">{{ item.name }}</span>
                     </template>
-                    <MenuItem name="1-1">Option 1</MenuItem>
-                    <MenuItem name="1-2">Option 2</MenuItem>
-                    <MenuItem name="1-3">Option 3</MenuItem>
-                </Submenu>
-                <Submenu name="2">
-                    <template slot="title">
-                        <Icon type="ios-keypad"></Icon>
-                        Item 2
+                    <template v-for="child in item.children">
+                        <MenuItem :name="child.name" :key="'menuitem' + child.name">
+                        <Icon :type="child.meta.icon" :size="iconSize" :key="'icon' + child.name"></Icon>
+                        <span class="layout-text" :key="'title' + child.name">{{ child.name }}</span>
+                        </MenuItem>
                     </template>
-                    <MenuItem name="2-1">Option 1</MenuItem>
-                    <MenuItem name="2-2">Option 2</MenuItem>
                 </Submenu>
-                <Submenu name="3">
-                    <template slot="title">
-                        <Icon type="ios-analytics"></Icon>
-                        Item 3
-                    </template>
-                    <MenuItem name="3-1">Option 1</MenuItem>
-                    <MenuItem name="3-2">Option 2</MenuItem>
-                </Submenu>
-                 <Submenu name="1">
-                    <template slot="title">
-                        <Icon type="ios-navigate"></Icon>
-                        Item 1
-                    </template>
-                    <MenuItem name="1-1">Option 1</MenuItem>
-                    <MenuItem name="1-2">Option 2</MenuItem>
-                    <MenuItem name="1-3">Option 3</MenuItem>
-                </Submenu>
-                <Submenu name="2">
-                    <template slot="title">
-                        <Icon type="ios-keypad"></Icon>
-                        Item 2
-                    </template>
-                    <MenuItem name="2-1">Option 1</MenuItem>
-                    <MenuItem name="2-2">Option 2</MenuItem>
-                </Submenu>
-                <Submenu name="3">
-                    <template slot="title">
-                        <Icon type="ios-analytics"></Icon>
-                        Item 3
-                    </template>
-                    <MenuItem name="3-1">Option 1</MenuItem>
-                    <MenuItem name="3-2">Option 2</MenuItem>
-                </Submenu>
-            </Menu>
-          
-            </div>
+            </template>
+        </Menu>
+    </div>
 </template>
 
 <script>
+
 export default {
   name: "footer",
-  components: {},
+  components: {  },
   data() {
-    return {};
+    return {
+        iconSize:20
+    }
   },
-  props: {},
-  computed: {},
+//   props: { menuList: {
+//       type: Array
+//     }},
+  computed: {
+    menuList(){
+        console.log(this.$store.getters.menuList)
+        return this.$store.getters.menuList
+    }
+  },
   methods: {},
   watch: {},
   created() {}
@@ -78,13 +55,12 @@ export default {
   position: absolute;
   width: 200px;
   text-align: left;
- background-color: #49505f;
+  background-color: #49505f;
   top: 0;
   left: 0;
   height: 100%;
-//   flex: 0 0 200px;
-//   height: 100vh;
+  //   flex: 0 0 200px;
+  //   height: 100vh;
   overflow-y: auto;
 }
-
 </style>
