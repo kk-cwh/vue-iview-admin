@@ -29,7 +29,7 @@ export default {
     login() {
       this.$store.dispatch("Login").then(() => {
         console.log('login success')
-        this.$router.push({name:'home'})
+        this.$router.push({ path: 'home' })
       });
     }
   }

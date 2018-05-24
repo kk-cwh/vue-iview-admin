@@ -1,14 +1,16 @@
 <!-- 底部布局 -->
 <template>
-    <div class="layout-footer">
-
-        <slot></slot>
-    </div>
+  <div class="layout-footer">
+    <a class="footer-content" href="#">
+     底部
+    </a>
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "footer",
+  // name: "footer",
   components: {},
   data() {
     return {};
@@ -22,13 +24,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .layout-footer {
-//   position: absolute;
-//   width: 100%;
-//   background-color: #fafafa;
-//   height: 50px;
-//   text-align: center;
-//   line-height: 50px;
-//   bottom: 0;
-// }
+.layout-footer {
+  text-align: center;
+  line-height: 50px;
+  bottom: 0;
+}
 </style>

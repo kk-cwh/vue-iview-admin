@@ -2,19 +2,18 @@
 <template>
   <div class="layout-content">
     <div class="container">
+      
       <div class="container-header">
         <layout-header></layout-header>
       </div>
+
       <div class="container-main">
         <slot name="main"></slot>
       </div>
+
       <div class="container-footer">
         <layuot-footer>
-          <a class="footer-content" href="https://github.com/calebman/vue-DBM">
-            点此进入代码仓库
-          </a>
         </layuot-footer>
-
       </div>
     </div>
   </div>
@@ -24,7 +23,7 @@
 import layoutHeader from "./header";
 import layuotFooter from "./footer";
 export default {
-  name: "content",
+  // name: "content",
   components: {
     layoutHeader,
 

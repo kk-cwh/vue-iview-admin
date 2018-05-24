@@ -2,13 +2,14 @@
 <template>
   <div class="layout-header">
    header
+   <slot></slot>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "header",
+  name: "layout-header",
   components: {},
   data() {
     return {};

@@ -28,7 +28,7 @@
 <script>
 
 export default {
-  name: "footer",
+  name: "sidebar",
   components: {  },
   data() {
     return {

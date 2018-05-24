@@ -1,4 +1,5 @@
 import login from '@/views/login'
+import page404 from '@/views/error-page/404.vue'
 
 /**
 * hidden: true                   如果hidden为true则不在左侧菜单栏展示，默认为false
@@ -16,6 +17,24 @@ export const constantRouterMap = [
   { path: '/login', name: 'login', hidden: true, meta: { title: '系统登录' }, component: login }
 ]
 
+export const errorRouterMap = [
+  {
+    path: '/403',
+    meta: {
+      title: '403-权限不足'
+    },
+    name: 'error-403',
+    component: () => import('@/views/error-page/403.vue')
+  },
+  {
+    path: '/500',
+    meta: {
+      title: '500-服务端错误'
+    },
+    name: 'error-500',
+    component: () => import('@/views/error-page/500.vue')
+  },
+  { path: '/*', name: '404', hidden: true, component: page404 }]
 export const asyncRouterMap = [
   {
     path: '/',
@@ -29,6 +48,5 @@ export const asyncRouterMap = [
 
       { path: 'home', name: 'home', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
     ]
-  },
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]

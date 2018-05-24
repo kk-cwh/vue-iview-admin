@@ -1,27 +1,24 @@
 <template>
   <div class="home">
-  
-   主页123
-    
-  
+
+    <h2>主页123 </h2>
+
   </div>
 </template>
 
 <script>
-
 export default {
   name: "layout",
-  components: {
-
+  components: {},
+  mounted() {
+    console.log(123123);
   },
   data() {
     return {};
   },
   props: {},
   computed: {
-    routerLoading() {
-
-    }
+    routerLoading() {}
   },
   methods: {},
   watch: {},
@@ -30,5 +27,4 @@ export default {
 </script>
 
 <style lang="less">
-
 </style>
