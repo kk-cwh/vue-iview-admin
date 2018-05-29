@@ -1,56 +1,115 @@
 <template>
-  <div class="hello">
+  <div class="login-container">
+    <div class="login-container-left">
 
-    <qrcode :value="msg" :options="{
-       background: 'green',
-  backgroundAlpha: 0.5,
-  foreground: 'blue',
-  foregroundAlpha: 0.8,
-  level: 'H',
-  size: 200	}" tag="img"></qrcode>
- <Button type="primary" @click="login">Primary</Button>
+    </div>
+    <div class="login-container-right">
+      <div class="login-form">
+
+        <Card :bordered="false">
+          <p slot="title">
+            <Icon type="log-in"></Icon> 欢迎登陆</p>
+          <Form ref="formInline" :model="formInline" :rules="ruleInline">
+            <FormItem prop="user">
+              <Input type="text" v-model="formInline.user" placeholder="请输入用户名">
+              <span slot="prepend">
+                <Icon :size="16" type="person"></Icon>
+              </span>
+              </Input>
+            </FormItem>
+            <FormItem prop="password">
+              <Input type="password" v-model="formInline.password" placeholder="请输入密码">
+              <span slot="prepend">
+                <Icon :size="14" type="locked"></Icon>
+              </span>
+              </Input>
+            </FormItem>
+            <FormItem>
+              <Button type="primary" @click="handleSubmit('formInline')" long>登 录</Button>
+            </FormItem>
+          </Form>
+        </Card>
+
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import VueQrcode from "@xkeshi/vue-qrcode";
-
 export default {
-  name: "HelloWorld",
-  components: {
-    qrcode: VueQrcode
-  },
+  name: "Login",
+  components: {},
   data() {
     return {
-      msg: "https://vuejs.org?Welcome to Your Vue.js App"
+      formInline: {
+        user: "",
+        password: ""
+      },
+      ruleInline: {
+        user: [
+          {
+            required: true,
+            message: "请输入用户名！",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码！",
+            trigger: "blur"
+          },
+          {
+            type: "string",
+            min: 6,
+            message: "密码长度不能小于6位！",
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   methods: {
-    login() {
-      this.$store.dispatch("Login").then(() => {
-        console.log('login success')
-        this.$router.push({ path: 'home' })
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("Login").then(() => {
+            this.$Message.success("Success!");
+            this.$router.push({ path: "home" });
+          });
+        } else {
+          this.$Message.error("Fail!");
+        }
       });
     }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1,
-h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+<style lang="less" scoped>
+.login-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  // background: #2d3a4b;
+  background-image: url("https://file.iviewui.com/iview-admin/login_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  .login-container-left {
+    flex: 1;
+  }
+  .login-container-right {
+    flex: 0 0 360px;
+    .login-form {
+      margin: 200px 20px 20px 20px;
+      // padding: 20px;
+      background: #fff;
+      width: 300px;
+      // height: 300px;
+      border-radius: 5px;
+    }
+  }
 }
 </style>
+
