@@ -75,8 +75,9 @@ const user = {
             routes.push(item)
           }
         })
-        console.log(routes)
+        console.log(routes = asyncRouterMap)
         commit('SET_MENULIST', routes)
+
         router.addRoutes(routes.concat(errorRouterMap))
         console.log('add routes')
         resolve()

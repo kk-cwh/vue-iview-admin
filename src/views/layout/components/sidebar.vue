@@ -1,7 +1,7 @@
 <!-- åº•éƒ¨å¸ƒå±€ -->
 <template>
     <div class="layout-sider">
-        <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+        <Menu :active-name="activeMenuItem" theme="dark" width="auto" :open-names="['1']" @on-select="selectItem">
             <template v-for="item in menuList">
                 <MenuItem v-if="!item.hidden && item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <Icon :type="item.meta.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
@@ -32,7 +32,7 @@ export default {
   components: {  },
   data() {
     return {
-        iconSize:20
+        iconSize:20,activeMenuItem:'home'
     }
   },
 //   props: { menuList: {
@@ -44,8 +44,16 @@ export default {
         return this.$store.getters.menuList
     }
   },
-  methods: {},
-  watch: {},
+  methods: {
+      selectItem(name){
+       this.$router.push({name})
+      }
+  },
+  watch: {
+      $route(to) {
+      this.activeMenuItem = (to.name);
+    }
+  },
   created() {}
 };
 </script>

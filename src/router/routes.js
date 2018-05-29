@@ -39,14 +39,27 @@ export const asyncRouterMap = [
   {
     path: '/',
     name: 'main',
-    redirect: '/home',
+    // redirect: '/home',
     // hidden: true,
-    meta: { title: '仪表盘', icon: 'ios-paw' },
+    meta: { title: '主页', icon: 'ios-paw' },
     component: layout,
     children: [
-      { path: 'home1', name: 'home1', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') },
+      { path: 'home1', name: 'home1', meta: { title: '500', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/500.vue') },
 
       { path: 'home', name: 'home', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
+    ]
+  },
+  {
+    path: '/user',
+    name: 'user',
+    // redirect: '/home',
+    // hidden: true,
+    meta: { title: '用户管理', icon: 'ios-paw' },
+    component: layout,
+    children: [
+      { path: 'list', name: 'user_list', meta: { title: '用户列表', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/403.vue') },
+
+      { path: 'index', name: 'user_home', meta: { title: '用户信息', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/404.vue') }
     ]
   }
 ]
