@@ -1,7 +1,7 @@
 <!-- åº•éƒ¨å¸ƒå±€ -->
 <template>
     <div class="layout-sider">
-        <Menu :active-name="activeMenuItem" theme="dark" width="auto" :open-names="['1']" @on-select="selectItem">
+        <Menu ref="sideMenu" :active-name="$route.name" theme="dark" width="auto"  @on-select="selectItem">
             <template v-for="item in menuList">
                 <MenuItem v-if="!item.hidden && item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <Icon :type="item.meta.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
@@ -32,6 +32,7 @@ export default {
   components: {  },
   data() {
     return {
+        openName:this.$store.state.app.openedSubmenuArr,
         iconSize:20,activeMenuItem:'home'
     }
   },
@@ -46,15 +47,27 @@ export default {
   },
   methods: {
       selectItem(name){
+          console.log(this.openName)
        this.$router.push({name})
       }
   },
   watch: {
       $route(to) {
       this.activeMenuItem = (to.name);
+       this.$store.commit('addOpenSubmenu', to.matched[0].name);
+        // this.$refs.sideMenu.updateOpened();
+        // this.$refs.sideMenu.updateActiveName();
     }
   },
-  created() {}
+  created() {},
+   updated () {
+        this.$nextTick(() => {
+            if (this.$refs.sideMenu) {
+                this.$refs.sideMenu.updateOpened();
+                // this.$refs.sideMenu.updateActiveName();
+            }
+        });
+    }
 };
 </script>
 
