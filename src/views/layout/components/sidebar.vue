@@ -1,7 +1,8 @@
 <!-- åº•éƒ¨å¸ƒå±€ -->
 <template>
     <div class="layout-sider">
-        <Menu ref="sideMenu" :active-name="$route.name" theme="dark" width="auto"  @on-select="selectItem">
+          <Button type="primary">Primary</Button>
+    <Menu ref="sideMenu" :active-name="$route.name" :open-names="openNames" :theme="menuTheme"  width="auto" @on-select="changeMenu" @on-open-change="opends">
             <template v-for="item in menuList">
                 <MenuItem v-if="!item.hidden && item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <Icon :type="item.meta.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
@@ -29,42 +30,50 @@
 
 export default {
   name: "sidebar",
+    props: {
+        menuList: Array,
+        iconSize:  {
+            type: Number,
+            default: 20
+        },
+        menuTheme: {
+            type: String,
+            default: 'dark'
+        },
+        openNames: {
+            type: Array
+        }
+    },
   components: {  },
   data() {
     return {
-        openName:this.$store.state.app.openedSubmenuArr,
-        iconSize:20,activeMenuItem:'home'
+
     }
   },
 //   props: { menuList: {
 //       type: Array
 //     }},
   computed: {
-    menuList(){
-        console.log(this.$store.getters.menuList)
-        return this.$store.getters.menuList
-    }
+
   },
   methods: {
-      selectItem(name){
-          console.log(this.openName)
+      changeMenu(name){
        this.$router.push({name})
+      },
+      opends(names){
+          console.log(names,'opends')
+          this.$store.commit('setOpenSubMenu',names)
       }
   },
   watch: {
-      $route(to) {
-      this.activeMenuItem = (to.name);
-       this.$store.commit('addOpenSubmenu', to.matched[0].name);
-        // this.$refs.sideMenu.updateOpened();
-        // this.$refs.sideMenu.updateActiveName();
-    }
+
   },
   created() {},
    updated () {
         this.$nextTick(() => {
             if (this.$refs.sideMenu) {
                 this.$refs.sideMenu.updateOpened();
-                // this.$refs.sideMenu.updateActiveName();
+
             }
         });
     }

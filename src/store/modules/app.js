@@ -16,6 +16,9 @@ const app = {
       if (!hasThisName && !isEmpty) {
         state.openedSubmenuArr.push(name)
       }
+    },
+    setOpenSubMenu (state, names) {
+      state.openedSubmenuArr = names
     }
   },
   actions: {

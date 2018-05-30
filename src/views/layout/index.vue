@@ -1,6 +1,8 @@
 <template>
   <div class="layout">
-     <sidebar></sidebar>
+     <sidebar 
+            :menu-list="menuList" 
+            :open-names="openedSubmenuArr"></sidebar>
      <layout-content>
         <router-view slot="main" ></router-view>
     </layout-content>
@@ -20,16 +22,23 @@ export default {
     sidebar
   },
   data() {
-    return {};
+    return {openedSubmenuArr: this.$store.state.app.openedSubmenuArr};
   },
   props: {},
   computed: {
+     menuList(){
+        return this.$store.getters.menuList
+    },
     routerLoading() {
       return this.$store.getters.routerLoading;
     }
   },
   methods: {},
-  watch: {},
+  watch: {
+     '$route'(to) {
+       this.$store.commit('addOpenSubmenu', to.matched[0].name);
+
+    }},
   created() {}
 };
 </script>
