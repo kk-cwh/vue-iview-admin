@@ -2,7 +2,7 @@
 const app = {
   state: {
     openedSubmenuArr: [], // 要展开的菜单数组,
-    openedTags: [] // 打开过的标签
+    openedTags: ['1', '2', '3', '4', '5'] // 打开过的标签
   },
   mutations: {
     addOpenSubmenu (state, name) {

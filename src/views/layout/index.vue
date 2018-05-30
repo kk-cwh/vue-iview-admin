@@ -59,7 +59,7 @@ export default {
       this.$store.commit("addOpenTag", to.name);
     },
     openedTags(val) {
-      this.tagBodyLeft = val.length * 200;
+      this.tagBodyLeft = (val.length * 50);
     }
   },
   mounted() {
