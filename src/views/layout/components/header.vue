@@ -13,7 +13,7 @@
       <Dropdown>
         <a href="javascript:void(0)">
           <!-- 登陆用户 名称 和头像-->
-          <span> {{name}}天空之城 &nbsp;&nbsp;</span>
+          <span> {{name}}&nbsp;&nbsp;</span>
           <Avatar :src="avatar" />
         </a>
         <DropdownMenu slot="list">

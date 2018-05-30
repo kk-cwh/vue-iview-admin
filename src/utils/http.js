@@ -27,24 +27,18 @@ http.interceptors.request.use(config => {
 
 // 响应拦截
 http.interceptors.response.use(response => {
+  console.log(response)
   /**
    * 通过response自定义errCode来标示请求状态
    */
-  const res = response.data
-  switch (res.errCode) {
-    // 请求成功的结果码
-    case '00':
-      return Promise.resolve(res.data)
-    // token失效的结果码
-    case '43':
-      break
-    // 其他错误结果码
-    default:
-
-      return Promise.reject(res.errMsg)
+  const status = response.status
+  if (status === 200 || status === 201 || status === 204) {
+    return response.data
+  } else {
+    return Promise.reject(new Error('error'))
   }
 }, err => {
-  console.log(err)
+  // console.log(err)
 
   return Promise.reject(err)
 })

@@ -12,8 +12,8 @@
       </div>
 
       <div class="container-footer">
-        <layuot-footer>
-        </layuot-footer>
+        <!-- <layuot-footer>
+        </layuot-footer> -->
       </div>
     </div>
   </div>
@@ -72,7 +72,7 @@ export default {
 .layout-content {
   position: absolute;
   background: #fff;
-  left: 200px;
+  left: 180px;
   right: 0;
   bottom: 0;
   height: 100%;
@@ -90,12 +90,12 @@ export default {
     .container-main {
       flex: 1 0 300px;
       margin: 10px;
-      border: 1px solid #e6e6e6;
+      // border: 1px solid #e6e6e6;
       overflow-y: auto;
     }
     .container-footer {
-      flex: 0 0 64px;
-      border: 1px solid rgb(250, 105, 79);
+      flex: 0 0 10px;
+      // border: 1px solid rgb(250, 105, 79);
     }
   }
 }

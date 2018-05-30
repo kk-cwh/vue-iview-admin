@@ -71,14 +71,12 @@ export default {
 <style lang="less" scoped>
 .layout-sider {
   position: absolute;
-  width: 200px;
+  width: 180px;
   text-align: left;
   background-color: #49505f;
   top: 0;
   left: 0;
   height: 100%;
-  //   flex: 0 0 200px;
-  //   height: 100vh;
   overflow-y: auto;
 }
 </style>

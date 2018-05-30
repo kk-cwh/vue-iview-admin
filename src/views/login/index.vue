@@ -74,8 +74,12 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           this.$store.dispatch("Login").then(() => {
-            this.$Message.success("Success!");
-            this.$router.push({ path: "home" });
+            this.$store
+              .dispatch("GetUserInfo")
+              .then(() => {
+                this.$router.push({ path: "home" });
+              })
+              .catch(err => {});
           });
         } else {
           this.$Message.error("Fail!");
