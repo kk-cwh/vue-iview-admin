@@ -6,7 +6,7 @@ const user = {
   state: {
     token: '',
     name: '',
-    avatar: '',
+    avatar: 'https://i.loli.net/2017/08/21/599a521472424.jpg',
     roles: [],
     hasMenus: {},
     menuList: []

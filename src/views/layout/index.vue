@@ -2,7 +2,7 @@
   <div class="layout">
      <sidebar 
             :menu-list="menuList" 
-            :open-names="openedSubmenuArr"></sidebar>
+            :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
      <layout-content>
         <router-view slot="main" ></router-view>
     </layout-content>
@@ -33,11 +33,17 @@ export default {
       return this.$store.getters.routerLoading;
     }
   },
-  methods: {},
+  methods: {
+    handelOpenChange(openNames){
+      this.$store.commit("setOpenSubMenu", openNames);
+    },
+    handelSelect(name){
+      this.$router.push({ name });
+    }
+  },
   watch: {
      '$route'(to) {
        this.$store.commit('addOpenSubmenu', to.matched[0].name);
-
     }},
   created() {}
 };

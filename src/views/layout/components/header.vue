@@ -1,27 +1,24 @@
 <template>
   <div class="layout-header">
 
-    <div class="header-left">
+    <div class="header-icon">
       <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon-round" size="24"></Icon>
+    </div>
+    <div class="header-breadcrumb">
       <Breadcrumb>
         <BreadcrumbItem :to="item.path" v-for="item in breadcrumbItems" :key="item.path">{{item.title}}</BreadcrumbItem>
-       
       </Breadcrumb>
-
     </div>
-    <div class="header-right">
+    <div class="header-avatar">
       <Dropdown>
         <a href="javascript:void(0)">
-          <span> iview_admin &nbsp;&nbsp;</span>
-          <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
-          <!-- <Icon type="arrow-down-b"></Icon> -->
+          <!-- 登陆用户 名称 和头像-->
+          <span> {{name}}天空之城 &nbsp;&nbsp;</span>
+          <Avatar :src="avatar" />
         </a>
         <DropdownMenu slot="list">
-          <DropdownItem>驴打滚</DropdownItem>
-          <DropdownItem>炸酱面</DropdownItem>
-          <DropdownItem>豆汁儿</DropdownItem>
-          <DropdownItem>冰糖葫芦</DropdownItem>
-          <DropdownItem>北京烤鸭</DropdownItem>
+          <DropdownItem>首页</DropdownItem>
+          <DropdownItem divided>退出</DropdownItem>
         </DropdownMenu>
       </Dropdown> &nbsp;&nbsp;
 
@@ -47,7 +44,6 @@ export default {
   },
   methods: {
     initBreadcrumbItems(router) {
-      console.log(router.matched, "---");
       let breadcrumbItems = [];
       for (let index in router.matched) {
         if (router.matched[index].meta && router.matched[index].meta.title) {
@@ -57,7 +53,7 @@ export default {
           });
         }
       }
-      this.breadcrumbItems = breadcrumbItems
+      this.breadcrumbItems = breadcrumbItems;
     },
     rotateIcon() {
       return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
@@ -89,12 +85,19 @@ export default {
 
 <style lang="less" scoped>
 .layout-header {
-  padding: 10px;
-  .header-left {
-    float: left;
+  height: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  .header-icon {
+    flex: 0 0 50px;
+    text-align: center;
   }
-  .header-right {
-    float: right;
+  .header-breadcrumb {
+    flex: 1;
+  }
+  .header-avatar {
+    flex: 0 0 120px;
   }
   .menu-icon {
     transition: all 0.3s;

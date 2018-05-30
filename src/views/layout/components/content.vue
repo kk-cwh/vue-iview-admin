@@ -85,6 +85,7 @@ export default {
       flex: 0 0 60px;
       text-align: left;
       border: 1px solid rgb(250, 105, 79);
+      box-sizing: border-box;
     }
     .container-main {
       flex: 1 0 300px;

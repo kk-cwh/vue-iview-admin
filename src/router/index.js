@@ -10,16 +10,16 @@ let router = new Router({
 })
 let whiteList = ['/login']
 router.beforeEach((to, from, next) => {
-  console.log(to)
+  // console.log(to)
   //   store.commit('UPDATE_ROUTER_LOADING', true); // 展示路由加载时动画
   if (getToken()) { // 存在token
-    console.log(getToken())
+    // console.log(getToken())
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
       if (store.getters.menuList.length === 0) { // 判断当前用户是否已拉取完用户信息
         store.dispatch('GetUserInfo').then(data => { // 拉取用户信息
-          console.log('GetUserInfo', store.getters.menuList)
+          // console.log('GetUserInfo', store.getters.menuList)
           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
         }).catch(() => { // 拉取用户信息失败，提示登录状态失效
           // store.dispatch('FedLogOut').then(() => {
