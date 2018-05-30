@@ -2,8 +2,8 @@
     <div class="layout-sider">
         <slot name="logo"></slot>
         <Menu ref="sideMenu" :active-name="$route.name" :open-names="openNames" :theme="menuTheme" width="auto" @on-select="changeRoute" @on-open-change="changeOpenNames">
-            <template v-for="item in menuList">
-                <MenuItem v-if="!item.hidden && item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
+            <template v-for="item in showMenuList">
+                <MenuItem v-if="!item.hidden && item.children.length===1" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <Icon :type="item.meta.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
                 <span class="layout-text" :key="'title' + item.name">{{ item.children[0].meta.title }}</span>
                 </MenuItem>
@@ -46,7 +46,24 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+        showMenuList(){
+          let showMenuList = []
+           this.menuList.forEach(item => {
+              if (!item.hidden) {
+                if (item.children && item.children.length) {
+                  let children = item.children.filter(element => {
+                    return !element.hidden
+                  })
+                  item.children = children
+                }
+                showMenuList.push(item)
+              }
+            })
+            return showMenuList
+        }
+
+  },
   methods: {
     changeRoute(name) {
        this.$emit('on-select', name);
