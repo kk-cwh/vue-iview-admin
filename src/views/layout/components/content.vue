@@ -6,7 +6,7 @@
       <div class="container-header">
         <layout-header></layout-header>
       </div>
-       <div class="container-tags">
+      <div class="container-tags">
         <slot name="tags"></slot>
       </div>
       <div class="container-main">
@@ -31,23 +31,13 @@ export default {
     layuotFooter
   },
   data() {
-    return {
-
-    };
+    return {};
   },
   props: {},
-  computed: {
-
-  },
-  methods: {
-
-  },
-  watch: {
-
-  },
-  created() {
-
-  }
+  computed: {},
+  methods: {},
+  watch: {},
+  created() {}
 };
 </script>
 
@@ -73,7 +63,11 @@ export default {
     .container-tags {
       flex: 0 0 40px;
       border-bottom: solid 1px #e6e6e6;
+      position: relative;
       box-sizing: border-box;
+      padding-right: 120px;
+      width: 100%;
+      height: 40px;
     }
     .container-main {
       flex: 1 0 300px;

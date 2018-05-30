@@ -2,7 +2,7 @@
   <div class="layout">
     <sidebar :menu-list="menuList" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
     <layout-content>
-      <div class="open-tags" slot="tags">
+      <div class="open-tags" slot="tags" :style="{left: tagBodyLeft + 'px'}">
         <Tag v-for="item in openedTags" @click.native="linkTo(item)" :key="item" :name="item" type="dot" closable @on-close="handleClose" :color="$route.name === item ? 'blue':'default'">标签{{ item + 1 }}</Tag>
       </div>
       <router-view slot="main"></router-view>
@@ -23,7 +23,8 @@ export default {
   data() {
     return {
       openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
-      openedTags: this.$store.state.app.openedTags
+      openedTags: this.$store.state.app.openedTags,
+      tagBodyLeft: 0
     };
   },
   props: {},
@@ -56,6 +57,9 @@ export default {
     $route(to) {
       this.$store.commit("addOpenSubmenu", to.matched[0].name);
       this.$store.commit("addOpenTag", to.name);
+    },
+    openedTags(val) {
+      this.tagBodyLeft = val.length * 200;
     }
   },
   mounted() {
@@ -70,5 +74,12 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  .open-tags {
+    position: absolute;
+    padding: 2px 10px;
+    overflow: visible;
+    white-space: nowrap;
+    transition: left 0.3s ease;
+  }
 }
 </style>
