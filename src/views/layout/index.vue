@@ -30,6 +30,9 @@ export default {
     }
   },
   methods: {
+    init() {
+      this.$store.commit("addOpenSubmenu", this.$route.matched[0].name);
+    },
     handelOpenChange(openNames) {
       this.$store.commit("setOpenSubMenu", openNames);
     },
@@ -39,8 +42,12 @@ export default {
   },
   watch: {
     $route(to) {
+      console.log(to.name, "to.name");
       this.$store.commit("addOpenSubmenu", to.matched[0].name);
     }
+  },
+  mounted() {
+    this.init();
   },
   created() {}
 };
@@ -52,5 +59,4 @@ export default {
   height: 100%;
   margin: 0 auto;
 }
-
 </style>
