@@ -89,6 +89,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+   background-color: #fff;
   .header-icon {
     flex: 0 0 50px;
     text-align: center;

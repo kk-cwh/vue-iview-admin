@@ -2,11 +2,13 @@
 <template>
   <div class="layout-content">
     <div class="container">
-      
+
       <div class="container-header">
         <layout-header></layout-header>
       </div>
-
+       <div class="container-tags">
+        <slot name="tags"></slot>
+      </div>
       <div class="container-main">
         <slot name="main"></slot>
       </div>
@@ -26,44 +28,25 @@ export default {
   // name: "content",
   components: {
     layoutHeader,
-
     layuotFooter
   },
   data() {
     return {
-      breadcrumbItems: []
+
     };
   },
   props: {},
   computed: {
-    routerLoading() {
-      return this.$store.getters.routerLoading;
-    }
+
   },
   methods: {
-    initBreadcrumbItems(router) {
-      let breadcrumbItems = [{ path: "/", title: "数据管理系统" }];
-      for (let index in router.matched) {
-        if (router.matched[index].meta && router.matched[index].meta.title) {
-          breadcrumbItems.push({
-            path: router.matched[index].path ? router.matched[index].path : "/",
-            title: router.matched[index].meta.title
-          });
-        }
-      }
-      if (breadcrumbItems.length > 0) {
-        breadcrumbItems[breadcrumbItems.length - 1].path = "";
-      }
-      this.breadcrumbItems = breadcrumbItems;
-    }
+
   },
   watch: {
-    $route(to) {
-      this.initBreadcrumbItems(to);
-    }
+
   },
   created() {
-    this.initBreadcrumbItems(this.$route);
+
   }
 };
 </script>
@@ -71,7 +54,7 @@ export default {
 <style lang="less" scoped>
 .layout-content {
   position: absolute;
-  background: #fff;
+  background-color: #f0f0f0;
   left: 180px;
   right: 0;
   bottom: 0;
@@ -87,10 +70,16 @@ export default {
       border-bottom: solid 1px #e6e6e6;
       box-sizing: border-box;
     }
+    .container-tags {
+      flex: 0 0 40px;
+      border-bottom: solid 1px #e6e6e6;
+      box-sizing: border-box;
+    }
     .container-main {
       flex: 1 0 300px;
       margin: 10px;
       // border: 1px solid #e6e6e6;
+
       overflow-y: auto;
     }
     .container-footer {

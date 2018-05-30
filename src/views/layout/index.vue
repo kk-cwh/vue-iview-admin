@@ -2,6 +2,9 @@
   <div class="layout">
     <sidebar :menu-list="menuList" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
     <layout-content>
+      <div class="open-tags" slot="tags">
+        <Tag v-for="item in openedTags" @click.native="linkTo(item)" :key="item" :name="item" type="dot" closable @on-close="handleClose" :color="$route.name === item ? 'blue':'default'">标签{{ item + 1 }}</Tag>
+      </div>
       <router-view slot="main"></router-view>
     </layout-content>
 
@@ -18,7 +21,10 @@ export default {
     sidebar
   },
   data() {
-    return { openedSubmenuArr: this.$store.state.app.openedSubmenuArr };
+    return {
+      openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+      openedTags: this.$store.state.app.openedTags
+    };
   },
   props: {},
   computed: {
@@ -38,12 +44,18 @@ export default {
     },
     handelSelect(name) {
       this.$router.push({ name });
+    },
+    handleClose(event, name) {
+      this.$store.commit("removeOpenTag", name);
+    },
+    linkTo(name) {
+      this.$router.push({ name });
     }
   },
   watch: {
     $route(to) {
-      console.log(to.name, "to.name");
       this.$store.commit("addOpenSubmenu", to.matched[0].name);
+      this.$store.commit("addOpenTag", to.name);
     }
   },
   mounted() {
