@@ -50,16 +50,17 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/user',
-    name: 'user',
+    path: '/error',
+    name: 'error',
     // redirect: '/home',
     // hidden: true,
-    meta: { title: '用户管理', icon: 'ios-paw' },
+    meta: { title: '错误页面', icon: 'ios-paw' },
     component: layout,
     children: [
-      { path: 'list', name: 'user_list', meta: { title: '用户列表', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/403.vue') },
+      { path: '403', name: 'err403', meta: { title: '403页面', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/403.vue') },
 
-      { path: 'index', name: 'user_home', meta: { title: '用户信息', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/404.vue') }
+      { path: '404', name: 'err404', meta: { title: '404页面', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/404.vue') },
+      { path: '500', name: 'err500', meta: { title: '500页面', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/500.vue') }
     ]
   }
 ]

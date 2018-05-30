@@ -85,7 +85,7 @@ export default {
 
 <style lang="less" scoped>
 .layout-header {
-  height: 60px;
+  height: 50px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

@@ -82,15 +82,15 @@ export default {
     height: 100%;
     overflow-y: auto;
     .container-header {
-      flex: 0 0 60px;
+      flex: 0 0 50px;
       text-align: left;
-      border: 1px solid rgb(250, 105, 79);
+      border-bottom: solid 1px #e6e6e6;
       box-sizing: border-box;
     }
     .container-main {
       flex: 1 0 300px;
       margin: 10px;
-      border: 1px solid rgb(250, 105, 79);
+      border: 1px solid #e6e6e6;
       overflow-y: auto;
     }
     .container-footer {
