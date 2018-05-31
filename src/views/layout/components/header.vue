@@ -1,6 +1,5 @@
 <template>
   <div class="layout-header">
-
     <div class="header-icon">
       <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon-round" size="24"></Icon>
     </div>
@@ -85,7 +84,6 @@ export default {
 
 <style lang="less" scoped>
 .layout-header {
-  height: 50px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

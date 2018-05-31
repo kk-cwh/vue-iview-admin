@@ -86,14 +86,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.layout-sider {
-  position: absolute;
-  width: 180px;
-  text-align: left;
-  background-color: #49505f;
-  top: 0;
-  left: 0;
-  height: 100%;
-  overflow-y: auto;
-}
+
 </style>

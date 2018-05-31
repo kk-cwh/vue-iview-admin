@@ -1,23 +1,26 @@
 <template>
   <div class="layout">
-    <sidebar :menu-list="menuList" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
-    <layout-content>
-      <div class="open-tags" slot="tags" :style="{left: tagBodyLeft + 'px'}">
-        <Tag v-for="item in openedTags" @click.native="linkTo(item)" :key="item" :name="item" type="dot" closable @on-close="handleClose" :color="$route.name === item ? 'blue':'default'">标签{{ item + 1 }}</Tag>
-      </div>
-      <router-view slot="main"></router-view>
-    </layout-content>
+    <sidebar class="layout-sidebar" :menu-list="menuList" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
+    <div class="layout-container">
+      <layout-header class="layout-header"></layout-header>
+      <tags-view class="layout-tags"></tags-view>
+      <layout-main class="layout-main"></layout-main>
+    </div>
 
   </div>
 </template>
 
 <script>
-import layoutContent from "./components/content";
+import layoutMain from "./components/main";
+import tagsView from "./components/tagsView";
+import layoutHeader from "./components/header";
 import sidebar from "./components/sidebar";
 export default {
   name: "layout",
   components: {
-    layoutContent,
+    layoutMain,
+    tagsView,
+    layoutHeader,
     sidebar
   },
   data() {
@@ -37,6 +40,15 @@ export default {
     }
   },
   methods: {
+    toLoading() {
+      let w = this.$refs.opentag_panent.offsetWidth;
+      console.log(w);
+      alert(w);
+      console.log(this.$refs.opened_tags);
+      this.$refs.opened_tags.forEach(item => {
+        console.log(item.$el.offsetLeft);
+      });
+    },
     init() {
       this.$store.commit("addOpenSubmenu", this.$route.matched[0].name);
     },
@@ -59,7 +71,7 @@ export default {
       this.$store.commit("addOpenTag", to.name);
     },
     openedTags(val) {
-      this.tagBodyLeft = (val.length * 50);
+      this.tagBodyLeft = val.length * 50;
     }
   },
   mounted() {
@@ -69,17 +81,41 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .layout {
+  position: relative;
   width: 100%;
   height: 100%;
-  margin: 0 auto;
-  .open-tags {
+  overflow: hidden;
+  .layout-sidebar {
     position: absolute;
-    padding: 2px 10px;
-    overflow: visible;
-    white-space: nowrap;
-    transition: left 0.3s ease;
+    width: 180px;
+    text-align: left;
+    background-color: #49505f;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .layout-container {
+    position: absolute;
+    background-color: #fff;
+    left: 180px;
+    right: 0;
+    height: 100%;
+    display: flex; /*设为伸缩容器*/
+    flex-direction: column;
+    .layout-header {
+      flex: 0 0 50px;
+    }
+    .layout-tags {
+      flex: 0 0 40px;
+    }
+    .layout-main{
+     flex: 1;
+     background-color: #f0f0f0;
+    //  padding: 10px;
+    } 
   }
 }
 </style>

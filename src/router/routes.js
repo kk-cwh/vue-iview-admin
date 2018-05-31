@@ -65,5 +65,32 @@ export const asyncRouterMap = [
       { path: '404', name: 'err404', meta: { title: '404页面', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/404.vue') },
       { path: '500', name: 'err500', meta: { title: '500页面', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/500.vue') }
     ]
+  },
+  {
+    path: '/table',
+    name: 'table',
+    // redirect: '/error/404',
+    // hidden: true,
+    meta: { title: '表格示例', icon: 'ios-paw' },
+    component: layout,
+    children: [
+      { path: 'index', name: 'table_index', meta: { title: '自定义列表格', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/table/index.vue') },
+      { path: 'select', name: 'select', meta: { title: '带选框表格', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/table/select.vue') },
+      { path: 'sort', name: 'sort', meta: { title: '排序表格', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/table/sort.vue') }
+    ]
+  },
+  {
+    path: '/form',
+    name: 'form',
+    // redirect: '/error/404',
+    // hidden: true,
+    meta: { title: '表单示例', icon: 'ios-paw' },
+    component: layout,
+    children: [
+      { path: 'index', name: 'form_index', meta: { title: '基本表单', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/form/index.vue') },
+      { path: 'formInline', name: 'formInline', meta: { title: '行内表单', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/form/formInline.vue') },
+      { path: 'formValidate', name: 'formValidate', meta: { title: '表单验证', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/form/formValidate.vue') },
+      { path: 'formCustom', name: 'formCustom', meta: { title: '自定义验证', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/form/formCustom.vue') }
+    ]
   }
 ]
