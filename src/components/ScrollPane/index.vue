@@ -49,6 +49,7 @@ export default {
         this.left = -$targetLeft + padding
       } else if ($targetLeft + padding > -this.left && $targetLeft + $targetWidth < -this.left + $containerWidth - padding) {
         // tag in the current view
+        //  this.left = Math.min(0, $containerWidth - 100 - $targetWidth - $targetLeft - 20);
         // eslint-disable-line
       } else {
         // tag in the right
@@ -58,8 +59,7 @@ export default {
   }
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="less" scoped>
 .scroll-container {
   white-space: nowrap;
   position: relative;

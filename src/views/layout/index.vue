@@ -3,7 +3,10 @@
     <sidebar class="layout-sidebar" :menu-list="menuList" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
     <div class="layout-container">
       <layout-header class="layout-header"></layout-header>
-      <tags-view class="layout-tags"></tags-view>
+      <div class="layout-tags">
+ <tags-view></tags-view>
+      </div>
+     
       <layout-main class="layout-main"></layout-main>
     </div>
 
@@ -110,6 +113,7 @@ export default {
     }
     .layout-tags {
       flex: 0 0 40px;
+      border: 1px solid #49505f;
     }
     .layout-main{
      flex: 1;
