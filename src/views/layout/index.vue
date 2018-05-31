@@ -113,7 +113,6 @@ export default {
     }
     .layout-tags {
       flex: 0 0 40px;
-      border: 1px solid #49505f;
     }
     .layout-main{
      flex: 1;
