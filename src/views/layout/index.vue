@@ -110,9 +110,14 @@ export default {
     flex-direction: column;
     .layout-header {
       flex: 0 0 50px;
+      box-sizing: border-box;
+      border-bottom: 1px solid #ebebeb;
     }
     .layout-tags {
-      flex: 0 0 40px;
+      flex: 0 0 36px;
+      background: #ebebeb;
+      padding-left: 10px;
+      
     }
     .layout-main{
      flex: 1;
