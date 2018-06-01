@@ -8,13 +8,11 @@
 </template>
 
 <script>
-import layoutHeader from "./header";
-import layuotFooter from "./footer";
+
 export default {
   // name: "content",
   components: {
-    layoutHeader,
-    layuotFooter
+
   },
   data() {
     return {};

@@ -1,6 +1,6 @@
 <template>
-  <div class="layout-header">
-    <div class="header-icon">
+  <div class="layout-header" >
+    <div class="header-icon" >
       <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon-round" size="24"></Icon>
     </div>
     <div class="header-breadcrumb">
@@ -39,7 +39,10 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(["avatar", "name", "introduction", "isLogin"])
+    ...mapGetters(["avatar", "name", "introduction", "isLogin"]),
+     rotateIcon() {
+      return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
+    },
   },
   methods: {
     initBreadcrumbItems(router) {
@@ -54,12 +57,10 @@ export default {
       }
       this.breadcrumbItems = breadcrumbItems;
     },
-    rotateIcon() {
-      return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
-    },
+
     collapsedSider() {
-      alert(this.isCollapsed);
-      this.isCollapsed = true;
+      this.isCollapsed = !this.isCollapsed;
+      this.$store.commit('SET_SHRINK',this.isCollapsed)
     },
     userCommand(command) {
       switch (command) {
@@ -87,22 +88,24 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-   background-color: #fff;
+  background-color: #fff;
   .header-icon {
     flex: 0 0 50px;
     text-align: center;
+     .menu-icon {
+      transition: all 0.3s;
+    }
+    .rotate-icon {
+      transform: rotate(-90deg);
+    }
   }
+
   .header-breadcrumb {
     flex: 1;
   }
   .header-avatar {
     flex: 0 0 120px;
   }
-  .menu-icon {
-    transition: all 0.3s;
-  }
-  .rotate-icon {
-    transform: rotate(-90deg);
-  }
 }
+ 
 </style>

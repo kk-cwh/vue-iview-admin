@@ -2,9 +2,14 @@
 const app = {
   state: {
     openedSubmenuArr: [], // 要展开的菜单数组,
-    openedTags: [] // 打开过的标签
+    openedTags: [], // 打开过的标签,
+    shrink: false
+
   },
   mutations: {
+    SET_SHRINK (state, boolval) {
+      state.shrink = boolval
+    },
     addOpenSubmenu (state, name) {
       let hasThisName = false
       let isEmpty = false
