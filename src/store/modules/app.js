@@ -24,27 +24,25 @@ const app = {
       }
     },
     removeOpenTag (state, name) {
-      let isEmpty = false
-      if (name.length === 0) {
-        isEmpty = true
-      }
-      if (!isEmpty && state.openedTags.indexOf(name) > -1) {
-        const index = state.openedTags.indexOf(name)
-        state.openedTags.splice(index, 1)
+      const index = state.openedTags.findIndex(item => {
+        return item.name === name
+      })
+      state.openedTags.splice(index, 1)
+    },
+    addOpenTag (state, tag) {
+      let isHas = state.openedTags.some(item => {
+        return item.name === tag.name
+      })
+      if (!isHas) {
+        state.openedTags.push(tag)
       }
     },
-    addOpenTag (state, name) {
-      let hasThisName = false
-      let isEmpty = false
-      if (name.length === 0) {
-        isEmpty = true
-      }
-      if (state.openedTags.indexOf(name) > -1) {
-        hasThisName = true
-      }
-      if (!hasThisName && !isEmpty) {
-        state.openedTags.push(name)
-      }
+    clearAllTags (state) {
+      state.openedTags.splice(0)
+    },
+    clearOtherTags (state, vm) {
+      // let currentName = vm.$route.name
+      state.openedTags = [vm.$route]
     },
     setOpenSubMenu (state, names) {
       state.openedSubmenuArr = names

@@ -44,15 +44,13 @@ export default {
   methods: {
     init() {
       this.$store.commit("addOpenSubmenu", this.$route.matched[0].name);
+      this.$store.commit("addOpenTag", this.$route);
     },
     handelOpenChange(openNames) {
       this.$store.commit("setOpenSubMenu", openNames);
     },
     handelSelect(name) {
       this.$router.push({ name });
-    },
-    handleClose(event, name) {
-      this.$store.commit("removeOpenTag", name);
     },
     linkTo(name) {
       this.$router.push({ name });
@@ -61,7 +59,7 @@ export default {
   watch: {
     $route(to) {
       this.$store.commit("addOpenSubmenu", to.matched[0].name);
-      this.$store.commit("addOpenTag", to.name);
+      this.$store.commit("addOpenTag", to);
     }
   },
   mounted() {
@@ -79,7 +77,7 @@ export default {
   overflow: hidden;
   .layout-sidebar {
     position: absolute;
-   
+
     text-align: left;
     background-color: #49505f;
     top: 0;
@@ -102,7 +100,7 @@ export default {
     .layout-tags {
       flex: 0 0 36px;
       background: #ebebeb;
-      padding-left: 10px;
+      padding-left: 5px;
     }
     .layout-main {
       flex: 1;

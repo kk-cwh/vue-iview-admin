@@ -50,7 +50,7 @@ export const asyncRouterMap = [
     children: [
       { path: 'home1', hidden: true, name: 'home1', meta: { title: '500', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/500.vue') },
 
-      { path: 'home', name: 'home', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
+      { path: 'home', name: 'home_index', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
     ]
   },
   {
