@@ -3,10 +3,10 @@ const app = {
   state: {
     openedSubmenuArr: [], // 要展开的菜单数组,
     openedTags: [{
-      meta:{title: '首页' },
-            path: '',
-            name: 'home_index'
-        }], // 打开过的标签,
+      meta: { title: '首页' },
+      path: '',
+      name: 'home_index'
+    }], // 打开过的标签,
     shrink: false
 
   },
@@ -47,19 +47,19 @@ const app = {
     clearOtherTags (state, vm) {
       // let currentName = vm.$route.name
       // state.openedTags = [vm.$route]
-       let currentName = vm.$route.name;
-            let currentIndex = 0;
-            state.openedTags.forEach((item, index) => {
-                if (item.name === currentName) {
-                    currentIndex = index;
-                }
-            });
-            if (currentIndex === 0) {
-                state.openedTags.splice(1);
-            } else {
-                state.openedTags.splice(currentIndex + 1);
-                state.openedTags.splice(1, currentIndex - 1);
-            }
+      let currentName = vm.$route.name
+      let currentIndex = 0
+      state.openedTags.forEach((item, index) => {
+        if (item.name === currentName) {
+          currentIndex = index
+        }
+      })
+      if (currentIndex === 0) {
+        state.openedTags.splice(1)
+      } else {
+        state.openedTags.splice(currentIndex + 1)
+        state.openedTags.splice(1, currentIndex - 1)
+      }
     },
     setOpenSubMenu (state, names) {
       state.openedSubmenuArr = names

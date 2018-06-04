@@ -1,21 +1,21 @@
 <template>
-  <div class="tags-view-container">
-    <div class="close-all-tag-con">
-      <Dropdown transfer @on-click="handleTagsOption">
-        <Button size="small" type="primary">
-          标签选项
-          <Icon type="arrow-down-b"></Icon>
-        </Button>
-        <DropdownMenu slot="list">
-          <DropdownItem name="clearAll">关闭所有</DropdownItem>
-          <DropdownItem name="clearOthers">关闭其他</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+    <div class="tags-view-container">
+        <div class="close-all-tag-con">
+            <Dropdown transfer @on-click="handleTagsOption">
+                <Button size="small" type="primary">
+                    标签选项
+                    <Icon type="arrow-down-b"></Icon>
+                </Button>
+                <DropdownMenu slot="list">
+                    <DropdownItem name="clearAll">关闭所有</DropdownItem>
+                    <DropdownItem name="clearOthers">关闭其他</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        </div>
+        <scroll-pane class="tags-view-wrapper" ref='scrollPane'>
+            <Tag v-for="(item,index) in openedTags" ref="tag" @click.native="linkTo(item.name)" :key="index" :name="item.name" type="dot" :closable="index>0" @on-close="handleClose" :color="$route.name === item.name  ? 'blue':'default'">{{ item.meta.title }}</Tag>
+        </scroll-pane>
     </div>
-    <scroll-pane class="tags-view-wrapper" ref='scrollPane'>
-      <Tag v-for="(item,index) in openedTags" ref="tag" @click.native="linkTo(item.name)" :key="index" :name="item.name" type="dot" closable @on-close="handleClose" :color="$route.name === item.name  ? 'blue':'default'">{{ item.meta.title }}</Tag>
-    </scroll-pane>
-  </div>
 
 </template>
 <script>
@@ -28,9 +28,7 @@ export default {
     }
   },
   data() {
-    return {
-
-    }
+    return {};
   },
   watch: {
     $route() {
@@ -45,7 +43,20 @@ export default {
       this.$router.push({ name });
     },
     handleClose(event, name) {
+      //关闭标签 跳转到临近的上个标签
+      if (name === this.$route.name) {
+        let index = this.openedTags.findIndex(item => {
+          return item.name === name;
+        });
+
+        let to = this.openedTags[index - 1].name;
+        this.$router.push({
+          name: to
+        });
+      }
+
       this.$store.commit("removeOpenTag", name);
+      //  this.moveToCurrentTag();
     },
     handleTagsOption(type) {
       if (type === "clearAll") {
