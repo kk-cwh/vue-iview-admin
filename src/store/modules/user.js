@@ -75,6 +75,9 @@ const user = {
           resolve()
         })
       })
+    },
+    GetUserList: ({commit}) => {
+      return api.getUserList()
     }
 
   }

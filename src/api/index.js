@@ -18,5 +18,12 @@ export default {
       method: 'get',
       params: { token }
     })
+  },
+  getUserList (token) {
+    return http({
+      url: '/api/bins/h5yga',
+      method: 'get',
+      params: { token }
+    })
   }
 }
