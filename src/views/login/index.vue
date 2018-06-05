@@ -73,7 +73,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$store.dispatch("Login").then(() => {
+          this.$store.dispatch("Login",this.formInline).then(() => {
             this.$store
               .dispatch("GetUserInfo")
               .then(() => {

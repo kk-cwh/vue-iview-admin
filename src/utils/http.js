@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
-
+import { getToken } from '@/utils/auth'
 /**
  * http请求工具类
  * 请求拦截器 负责将客户端标识token值存储并放置在头部提交给服务端
@@ -16,8 +16,8 @@ const http = axios.create({
 
 // 请求拦截
 http.interceptors.request.use(config => {
-  if (store.getters.token) {
-    config.headers['X-Token'] = store.getters.token // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+  if (getToken()) {
+    config.headers['X-Token'] = getToken() // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
   }
   return config
 }, err => {
