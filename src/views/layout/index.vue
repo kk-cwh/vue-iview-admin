@@ -1,6 +1,8 @@
 <template>
   <div class="layout">
-    <sidebar class="layout-sidebar" :style="{ width: (shrink? '50px' : '180px')}" :menu-list="menuList" :shrink="shrink" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange"></sidebar>
+    <sidebar class="layout-sidebar" :style="{ width: (shrink? '50px' : '180px')}" :menu-list="menuList" :shrink="shrink" :open-names="openedSubmenuArr" @on-select="handelSelect" @on-open-change="handelOpenChange">
+        <div slot="logo" class="sidebar-logo" v-show="!shrink"></div>
+    </sidebar>
     <div class="layout-container" :style="{ left: (shrink? '50px' : '180px')}">
       <layout-header class="layout-header"></layout-header>
       <div class="layout-tags">
@@ -77,13 +79,22 @@ export default {
   overflow: hidden;
   .layout-sidebar {
     position: absolute;
-
     text-align: left;
     background-color: #49505f;
     top: 0;
     left: 0;
     height: 100%;
     overflow-y: auto;
+    .sidebar-logo{
+        text-align: center;
+        line-height: 30px;
+        font-size: 15px;
+        height: 30px;
+        margin: 10px 20px;
+        background:#2d8cf0;
+        color: aliceblue;
+        // background-image: url('https://iview.github.io/iview-admin/dist/9f35d093728efc834cf6f8b15fd17eea.jpg');
+    }
   }
   .layout-container {
     position: absolute;

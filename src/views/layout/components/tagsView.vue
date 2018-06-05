@@ -13,7 +13,9 @@
             </Dropdown>
         </div>
         <scroll-pane class="tags-view-wrapper" ref='scrollPane'>
-            <Tag v-for="(item,index) in openedTags" ref="tag" @click.native="linkTo(item.name)" :key="index" :name="item.name" type="dot" :closable="index>0" @on-close="handleClose" :color="$route.name === item.name  ? 'blue':'default'">{{ item.meta.title }}</Tag>
+            <transition-group name="taglist-moving-animation">
+                <Tag v-for="(item,index) in openedTags" ref="tag" @click.native="linkTo(item.name)" :key="index" :name="item.name" type="dot" :closable="index>0" @on-close="handleClose" :color="$route.name === item.name  ? 'blue':'default'">{{ item.meta.title }}</Tag>
+            </transition-group>
         </scroll-pane>
     </div>
 
@@ -91,14 +93,23 @@ export default {
   padding-right: 100px;
   .close-all-tag-con {
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 0px;
+    padding: 5px 20px;
+    right: 0px;
+    background: #fff;
     z-index: 100;
+    box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
   }
   .tags-view-wrapper {
     height: 36px;
     // border-bottom: 1px solid #d8dce5;
     // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   }
+
+}
+</style>
+<style>
+  .taglist-moving-animation-move{
+    transition: transform .3s;
 }
 </style>

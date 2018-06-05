@@ -38,19 +38,75 @@ export const errorRouterMap = [
     title: 'title'               对应路由在左侧菜单栏的标题名称
     icon: 'icon-class'             对应路由在左侧菜单栏的图标样式，样式使用iconfont图标库，见assest/iconfont文件夹
   }
+  children 下要显示的只有一个 则不会显示二级菜单 只显示该菜单 此时建议上级meta的title为''
 **/
 export const asyncRouterMap = [
   {
     path: '/',
     name: 'main',
-    // redirect: '/home',
-    // hidden: true,
-    meta: { title: '主页', icon: 'ios-paw' },
+    redirect: '/home',
+    hidden: true,
+    meta: { title: '', icon: 'ios-paw' },
     component: layout,
     children: [
-      { path: 'home1', hidden: true, name: 'home1', meta: { title: '500', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/error-page/500.vue') },
-
-      { path: 'home', name: 'home_index', meta: { title: '仪表盘', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
+      { path: 'home', name: 'home_index', meta: { title: '首页', icon: 'ios-paw' }, component: () => import(/* webpackChunkName: "group-index" */'@/views/home') }
+    ]
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    meta: { title: '', icon: 'ios-flask-outline' },
+    hidden: false,
+    component: layout,
+    access: 0,
+    children: [
+      { path: 'home', meta: {title: '面板', icon: 'ios-flask-outline'}, name: 'dashboard_index', component: () => import('@/views/dashboard/dashboard') }
+    ]
+  },
+  {
+    path: '/users',
+    name: 'users',
+    meta: { title: '', icon: 'person-stalker' },
+    component: layout,
+    children: [
+      { path: 'index', meta: { title: '用户管理', icon: 'person-stalker' }, name: 'users_index', component: () => import('@/views/users/users') }
+    ]
+  },
+  {
+    path: '/tags',
+    name: 'tags',
+    meta: { title: '', icon: 'pricetags' },
+    component: layout,
+    children: [
+      { path: 'index', meta: { title: '标签管理', icon: 'pricetags' }, name: 'tags_index', component: () => import('@/views/tags/tags') }
+    ]
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    meta: { title: '', icon: 'android-menu' },
+    component: layout,
+    children: [
+      { path: 'index', meta: { title: '分类管理', icon: 'ios-list' }, name: 'categories_index', component: () => import('@/views/categories/categories') }
+    ]
+  },
+  {
+    path: '/articles',
+    name: 'articles',
+    meta: { title: '', icon: 'android-menu' },
+    component: layout,
+    children: [
+      { path: 'index', meta: { title: '文章列表', icon: 'document-text' }, name: 'articles_index', component: () => import('@/views/articles/articles') }
+    //   { path: 'create', meta: { title: '创建', icon: 'document-text' }, name: 'articles_addindex', component: () => import('@/views/articles/add-article') }
+    ]
+  },
+  {
+    path: '/friendslinks',
+    name: 'friendslinks',
+    meta: { title: '', icon: 'ios-world' },
+    component: layout,
+    children: [
+      { path: 'index', meta: { title: '友链管理', icon: 'ios-world' }, name: 'friendslinks_index', component: () => import('@/views/friendslinks/friendslinks') }
     ]
   },
   {

@@ -12,15 +12,15 @@
       <Dropdown>
         <a href="javascript:void(0)">
           <!-- 登陆用户 名称 和头像-->
-          <span> {{name}}&nbsp;&nbsp;</span>
-          <Avatar :src="avatar" />
-        </a>
+          <span> {{name}} </span>
+          <Icon type="arrow-down-b"></Icon>
+        </a> 
         <DropdownMenu slot="list">
           <DropdownItem>首页</DropdownItem>
           <DropdownItem divided>退出</DropdownItem>
         </DropdownMenu>
-      </Dropdown> &nbsp;&nbsp;
-
+      </Dropdown>  <Avatar :src="avatar" /> &nbsp;
+ 
     </div>
     <slot></slot>
   </div>
@@ -57,7 +57,6 @@ export default {
       }
       this.breadcrumbItems = breadcrumbItems;
     },
-
     collapsedSider() {
       this.isCollapsed = !this.isCollapsed;
       this.$store.commit('SET_SHRINK',this.isCollapsed)
