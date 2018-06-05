@@ -62,7 +62,7 @@ export default {
           {
             type: "string",
             min: 5,
-            message: "密码长度不能小于6位！",
+            message: "密码长度不能小于5位！",
             trigger: "blur"
           }
         ]
