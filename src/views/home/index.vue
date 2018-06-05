@@ -9,13 +9,13 @@
                     <Row type="flex" class="user-info">
                         <Col span="8">
                         <Row class-name="made-child-con-middle" type="flex" align="middle">
-                            <img class="avator-img" :src="avatorPath" />
+                            <img class="avator-img" :src="avatar" />
                         </Row>
                         </Col>
                         <Col span="16" style="padding-left:6px;">
                         <Row class-name="made-child-con-middle" type="flex" align="middle">
                             <div>
-                                <b class="card-user-infor-name">{{userName}}</b>
+                                <b class="card-user-infor-name">{{name}}</b>
                                 <p>super admin</p>
                             </div>
                         </Row>
@@ -47,7 +47,8 @@
 
 <script>
 
-import Cookies from 'js-cookie';
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'home',
     components: {
@@ -60,6 +61,11 @@ export default {
         };
     },
     computed: {
+           ...mapGetters([
+      'avatar',
+      'name',
+      // ...
+    ]),
         avatorPath () {
             return localStorage.avatorImgPath;
         },

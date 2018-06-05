@@ -15,7 +15,6 @@ router.beforeEach((to, from, next) => {
   if (getToken()) { // 存在token
     if (to.path === '/login') {
       next({ path: '/' })
-      console.log('has token login')
     } else {
       if (store.getters.menuList.length === 0) { // 判断当前用户是否已拉取完用户信息
         store.dispatch('GetUserInfo').then(data => { // 拉取用户信息

@@ -8,18 +8,18 @@ export default {
       data
     })
   },
-  getUserInfo (token) {
+  getUserInfo (params) {
     return http({
       url: '/api/user_info',
       method: 'get',
-      params: { token }
+      params
     })
   },
-  getUserList (token) {
+  getUserList (params) {
     return http({
       url: '/api/users',
       method: 'get',
-      params: { token }
+      params
     })
   }
 }

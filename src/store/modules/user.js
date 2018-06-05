@@ -83,6 +83,14 @@ const user = {
     GetUserList: ({commit}) => {
       return api.getUserList()
     },
+    // 退出登录
+    LogOut ({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_TOKEN', '')
+        clearAllCache()
+        resolve()
+      })
+    },
     // 前端 登出
     FedLogOut ({ commit }) {
       return new Promise(resolve => {
