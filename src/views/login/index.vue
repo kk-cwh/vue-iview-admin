@@ -77,12 +77,9 @@ export default {
             this.$store
               .dispatch("GetUserInfo")
               .then(() => {
-                  console.log(123)
                 this.$router.push({ name: "home_index" });
               })
               .catch(err => {
-console.log(err)
-
               });
           });
         } else {
