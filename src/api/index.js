@@ -1,27 +1,23 @@
 import http from './../utils/http'
 
 export default {
-  loginByUsername (username, password) {
-    const params = {
-      username,
-      password
-    }
+  loginByUsername (data) {
     return http({
-      url: '/api/bins/wolhi',
-      method: 'get',
-      params
+      url: '/api/login',
+      method: 'post',
+      data
     })
   },
   getUserInfo (token) {
     return http({
-      url: '/api/bins/wolhi',
+      url: '/api/user_info',
       method: 'get',
       params: { token }
     })
   },
   getUserList (token) {
     return http({
-      url: '/api/bins/h5yga',
+      url: '/api/users',
       method: 'get',
       params: { token }
     })

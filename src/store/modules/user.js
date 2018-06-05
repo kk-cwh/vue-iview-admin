@@ -1,6 +1,6 @@
 
 import { constantRouterMap, asyncRouterMap, errorRouterMap } from '@/router/routes'
-import { setToken } from '@/utils/auth'
+import { setToken, clearAllCache, setKey } from '@/utils/auth'
 import api from '@/api'
 import router from './../../router'
 const user = {
@@ -33,9 +33,11 @@ const user = {
     Login: ({ commit }, data) => {
       return new Promise((resolve, reject) => {
         api.loginByUsername(data).then((res) => {
-          console.log(res, '----------------------')
-          commit('SET_TOKEN', res.token)
-          setToken(res.token)
+          const result = res.data
+          //   commit('SET_TOKEN', result.token_type + ' ' + result.access_token)
+          setToken(result.token_type + ' ' + result.access_token)
+          setKey('refresh_token', result.refresh_token)
+          setKey('expires_in', result.expires_in)
           resolve()
         }).catch(err => {
           reject(err)
@@ -45,34 +47,36 @@ const user = {
     GetUserInfo: ({ commit }) => {
       return new Promise((resolve, reject) => {
         api.getUserInfo().then(res => {
-          const data = {menus: {'home': 1, 'main': 1, 'home1': 1, 'home2': 1}}
-          const userMenus = data.menus
-          commit('SET_HASMENUS', userMenus)
-          //  设置左侧可显示菜单
-          let routes = []
-          if (!res.is_admin) {
-            asyncRouterMap.forEach(item => {
-              if (userMenus.hasOwnProperty(item.name) && userMenus[item.name]) {
-                if (item.children && item.children.length) {
-                  let children = item.children.filter(element => {
-                    return userMenus.hasOwnProperty(element.name) && userMenus[element.name]
-                  })
-                  item.children = children
+          if (res && res.data) {
+            const user = res.data.user
+            commit('SET_HASMENUS', res.data.menus)
+            commit('SET_NAME', user.name)
+            commit('SET_AVATAR', user.avatar)
+            const userMenus = res.data.menus
+
+            //  设置左侧可显示菜单
+            let routes = []
+            if (!user.is_admin) {
+              asyncRouterMap.forEach(item => {
+                if (userMenus.hasOwnProperty(item.name) && userMenus[item.name]) {
+                  if (item.children && item.children.length) {
+                    let children = item.children.filter(element => {
+                      return userMenus.hasOwnProperty(element.name) && userMenus[element.name]
+                    })
+                    item.children = children
+                  }
+                  routes.push(item)
                 }
-                routes.push(item)
-              }
-            })
-          } else {
-            routes = asyncRouterMap
+              })
+            } else {
+              routes = asyncRouterMap
+            }
+            commit('SET_MENULIST', routes)
+            router.addRoutes(routes.concat(errorRouterMap))
           }
-
-          commit('SET_NAME', res.name)
-          commit('SET_AVATAR', res.avatar)
-          commit('SET_MENULIST', routes)
-
-          router.addRoutes(routes.concat(errorRouterMap))
-          console.log('add routes')
           resolve()
+        }).catch(error => {
+          reject(error)
         })
       })
     },
@@ -83,7 +87,7 @@ const user = {
     FedLogOut ({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
-        // clearAllCache()
+        clearAllCache()
         resolve()
       })
     }

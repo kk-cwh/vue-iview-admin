@@ -10,15 +10,15 @@
           <p slot="title">
             <Icon type="log-in"></Icon> 欢迎登陆</p>
           <Form ref="formInline" :model="formInline" :rules="ruleInline">
-            <FormItem prop="user">
-              <Input type="text" v-model="formInline.user" placeholder="请输入用户名">
+            <FormItem prop="username">
+              <Input type="text" v-model="formInline.username" placeholder="请输入用户名">
               <span slot="prepend">
                 <Icon :size="16" type="person"></Icon>
               </span>
               </Input>
             </FormItem>
             <FormItem prop="password">
-              <Input type="password" v-model="formInline.password" placeholder="请输入密码">
+              <Input type="password" v-model="formInline.password" placeholder="请输入密码" @keyup.enter="handleSubmit('formInline')">
               <span slot="prepend">
                 <Icon :size="14" type="locked"></Icon>
               </span>
@@ -42,11 +42,11 @@ export default {
   data() {
     return {
       formInline: {
-        user: "",
-        password: ""
+        username: "admin",
+        password: "admin"
       },
       ruleInline: {
-        user: [
+        username: [
           {
             required: true,
             message: "请输入用户名！",
@@ -61,7 +61,7 @@ export default {
           },
           {
             type: "string",
-            min: 6,
+            min: 5,
             message: "密码长度不能小于6位！",
             trigger: "blur"
           }
@@ -73,13 +73,17 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$store.dispatch("Login").then(() => {
+          this.$store.dispatch("Login",this.formInline).then(() => {
             this.$store
               .dispatch("GetUserInfo")
               .then(() => {
-                this.$router.push({ path: "home" });
+                  console.log(123)
+                this.$router.push({ name: "home_index" });
               })
-              .catch(err => {});
+              .catch(err => {
+console.log(err)
+
+              });
           });
         } else {
           this.$Message.error("Fail!");
