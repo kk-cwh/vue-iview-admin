@@ -27,7 +27,6 @@ http.interceptors.request.use(config => {
 
 // 响应拦截
 http.interceptors.response.use(response => {
-  console.log(response)
   /**
    * 通过response自定义errCode来标示请求状态
    */

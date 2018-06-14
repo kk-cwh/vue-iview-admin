@@ -43,7 +43,7 @@ export default {
     return {
       loading: false,
       formInline: {
-        username: "admin",
+        username: "jaak",
         password: "admin"
       },
       ruleInline: {
@@ -76,8 +76,8 @@ export default {
         this.loading = true;
         if (valid) {
           try {
-            await this.$store.dispatch("Login", this.formInline);
-            // await this.$store.dispatch("GetUserInfo");
+            await this.$store.dispatch("Login", {name:this.formInline.username,password:this.formInline.password});
+            await this.$store.dispatch("GetUserInfo");
             this.$router.push({ name: "home_index" });
           } catch (error) {
             const response = error.response;
@@ -89,7 +89,7 @@ export default {
                 this.$Message.error("系统繁忙，请稍后再试!");
               }
             }
-            console.log(error.response);
+
           }
 
           //   this.$store.dispatch("Login",this.formInline).then(() => {

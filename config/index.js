@@ -14,7 +14,7 @@ module.exports = {
      //匹配代理的url
      '/api': {
       // 目标服务器地址
-      target: "http://lara56.zy.test",
+      target: "http://laravel.api.lara",
       // target: "http://zhuyu.lara",
       // pathRewrite: {"^/api" : "/api"},
       pathRewrite: {"^/api" : "/api"},

@@ -15,8 +15,8 @@
             <Button type="primary" @click="toQuery">查询</Button>
             </Col>
         </Row>
-        <Table border ref="selection" :columns="columns" :data="userDatas" stripe @on-select-all="selectAlldata"></Table>
-        <Page :total="dataCount" show-elevator show-sizer :page-size="10" class="margin-top-10 "></Page>
+        <Table border ref="selection" :columns="columns" :data="tableDatas" stripe @on-select-all="selectAlldata"></Table>
+        <Page :total="total" show-elevator show-sizer :page-size="10" class="margin-top-10 "></Page>
         <Modal v-model="modal1" title="友链信息" @on-ok="ok" @on-cancel="cancel">
             <Form :model="editRow" label-position="right" :label-width="100">
                 <FormItem label="图片">
@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       query: "",
+      total: 0,
       modal1: false,
       editRow: {},
       modal2: false,
@@ -161,59 +162,45 @@ export default {
           }
         }
       ],
-      userDatas: [
-        {
-          id: 1,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: false,
-          created_at: "2016-10-03"
-        },
-        {
-          id: 2,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: false,
-          created_at: "2016-10-03"
-        },
-        {
-          id: 3,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: true,
-          created_at: "2016-10-03"
-        },
-        {
-          id: 4,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: false,
-          created_at: "2016-10-03"
-        }
-      ]
+      tableDatas: []
     };
   },
-  computed: {
-    dataCount: function() {
-      return this.userDatas.length;
-    }
+  computed: {},
+  mounted() {
+    this.init();
   },
   methods: {
+    init() {
+      this.queryList();
+    },
+    async queryList() {
+      try {
+        const result = await this.$store.dispatch("GetUserList", { page: 1 });
+        this.tableDatas = result.data;
+        this.total = result.meta.total;
+      } catch (error) {
+        const response = error.response;
+        if (response) {
+          if (response.status === 401) {
+            this.$Message.error("你没有权限!");
+          }
+          if (response.status === 500) {
+            this.$Message.error("系统繁忙，请稍后再试!");
+          }
+        }
+      }
+    },
     handleSelectAll(status) {
       this.$refs.selection.selectAll(status);
     },
     changeStatus(index) {
-      this.userDatas[index].status = !this.userDatas[index].status;
+      this.tableDatas[index].status = !this.tableDatas[index].status;
       //  console.log( this.userDatas)
     },
     show(index) {
       this.modal1 = true;
       this.$Message.info("当前查看索引" + index);
-      this.editRow = this.userDatas[index];
+      this.editRow = this.tableDatas[index];
     },
     selectAlldata(datass) {
       this.$Message.success("选择了全部");
@@ -226,7 +213,7 @@ export default {
       console.log("cancel");
     },
     toQuery() {
-      console.log("query", this.query);
+      this.queryList();
     },
     toAdd() {
       this.modal2 = true;

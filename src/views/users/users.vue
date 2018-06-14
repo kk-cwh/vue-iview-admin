@@ -18,7 +18,7 @@
 
         <Table border ref="selection" :columns="columns" :data="userDatas" stripe @on-select-all="selectAlldata"></Table>
 
-        <Page :total="total"   size="small" show-total show-elevator show-sizer :page-size="10" class="margin-top-10"></Page>
+        <Page :total="total" size="small" show-total show-elevator show-sizer :page-size="10" class="margin-top-10"></Page>
 
         <Modal v-model="modal1" title="用户信息" @on-ok="ok" @on-cancel="cancel">
             <Form :model="editRow" label-position="right" :label-width="100">
@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       query: "",
-      total:0,
+      total: 0,
       modal1: false,
       modal2: false,
       addRow: {},
@@ -78,7 +78,18 @@ export default {
         {
           title: "头像",
           width: 80,
-          key: "avatar"
+          key: "avatar",
+          render: (h, params) => {
+            return h("div", [
+              h("Avatar", {
+                props: {
+                  src: params.row.avatar,
+                  shape: "square",
+                  size: "large"
+                }
+              })
+            ]);
+          }
         },
         {
           title: "用户名",
@@ -96,7 +107,7 @@ export default {
             return h("div", [
               h("i-switch", {
                 props: {
-                  value: params.row.status,
+                  value: params.row.status === 1,
                   size: "large"
                 },
                 scopedSlots: {
@@ -104,7 +115,7 @@ export default {
                     return "启用";
                   },
                   close: () => {
-                    return "停用";
+                    return "禁用";
                   }
                 },
                 on: {
@@ -167,17 +178,13 @@ export default {
           }
         }
       ],
-      userDatas: [
-
-      ]
+      userDatas: []
     };
   },
   mounted() {
     this.init();
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     init() {
       this.queryList();
@@ -193,8 +200,8 @@ export default {
     async queryList() {
       try {
         const result = await this.$store.dispatch("GetUserList", { page: 1 });
-        this.userDatas = result.data.list;
-        this.total = result.data.total
+        this.userDatas = result.data;
+        this.total = result.meta.total;
       } catch (error) {
         const response = error.response;
         if (response) {
@@ -211,7 +218,7 @@ export default {
       this.$refs.selection.selectAll(status);
     },
     changeStatus(index) {
-      this.userDatas[index].status = !this.userDatas[index].status;
+      this.userDatas[index].status = this.userDatas[index].status === 1 ? 0 : 1;
       //  console.log( this.userDatas)
     },
     show(index) {
@@ -230,7 +237,7 @@ export default {
       console.log("cancel");
     },
     toQuery() {
-      console.log("query", this.queryList());
+      this.queryList();
     },
     toAdd() {
       this.modal2 = true;

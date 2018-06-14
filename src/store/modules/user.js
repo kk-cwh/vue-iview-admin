@@ -48,7 +48,7 @@ const user = {
       return new Promise((resolve, reject) => {
         api.getUserInfo().then(res => {
           if (res && res.data) {
-            const user = res.data.user
+            const user = res.data
             commit('SET_HASMENUS', res.data.menus)
             commit('SET_NAME', user.name)
             commit('SET_AVATAR', user.avatar)

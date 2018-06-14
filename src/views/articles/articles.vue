@@ -16,8 +16,8 @@
             </Col>
         </Row>
 
-        <Table border ref="selection" :columns="columns" :data="userDatas" stripe @on-select-all="selectAlldata"></Table>
-        <Page :total="dataCount" show-elevator show-sizer :page-size="10" class="margin-top-10 "></Page>
+        <Table border ref="selection" :columns="columns" :data="tableDatas" stripe @on-select-all="selectAlldata"></Table>
+        <Page :total="total" show-elevator show-sizer :page-size="10" class="margin-top-10 "></Page>
     </div>
 </template>
 <script>
@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       query: "",
+      total: 0,
       columns: [
         {
           type: "selection",
@@ -123,53 +124,39 @@ export default {
           }
         }
       ],
-      userDatas: [
-        {
-          id: 1,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: false,
-          created_at: "2016-10-03"
-        },
-        {
-          id: 2,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: false,
-          created_at: "2016-10-03"
-        },
-        {
-          id: 3,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: true,
-          created_at: "2016-10-03"
-        },
-        {
-          id: 4,
-          name: "John Brown",
-          avatar: 18,
-          email: "New York No. 1 Lake Park",
-          status: false,
-          created_at: "2016-10-03"
-        }
-      ]
+      tableDatas: []
     };
   },
-  computed: {
-    dataCount: function() {
-      return this.userDatas.length;
-    }
+  computed: {},
+  mounted() {
+    this.init();
   },
   methods: {
+    init() {
+      this.queryList();
+    },
+    async queryList() {
+      try {
+        const result = await this.$store.dispatch("GetUserList", { page: 1 });
+        this.tableDatas = result.data;
+        this.total = result.meta.total;
+      } catch (error) {
+        const response = error.response;
+        if (response) {
+          if (response.status === 401) {
+            this.$Message.error("你没有权限!");
+          }
+          if (response.status === 500) {
+            this.$Message.error("系统繁忙，请稍后再试!");
+          }
+        }
+      }
+    },
     handleSelectAll(status) {
       this.$refs.selection.selectAll(status);
     },
     changeStatus(index) {
-      this.userDatas[index].status = !this.userDatas[index].status;
+      this.tableDatas[index].status = !this.tableDatas[index].status;
       //  console.log( this.userDatas)
     },
     show(index) {
@@ -180,7 +167,7 @@ export default {
       console.log(datass);
     },
     toQuery() {
-      console.log("query", this.query);
+      this.queryList();
     },
     toCreateArticle() {
       this.$router.push({ name: "add_article" });

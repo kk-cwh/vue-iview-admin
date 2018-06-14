@@ -3,14 +3,14 @@ import http from './../utils/http'
 export default {
   loginByUsername (data) {
     return http({
-      url: '/api/login',
+      url: '/api/auth/login',
       method: 'post',
       data
     })
   },
   getUserInfo (params) {
     return http({
-      url: '/api/user_info',
+      url: '/api/auth/me',
       method: 'get',
       params
     })
