@@ -21,5 +21,26 @@ export default {
       method: 'get',
       params
     })
+  },
+  addUser (data) {
+    return http({
+      url: '/api/users',
+      method: 'post',
+      data
+    })
+  },
+  updateUser (data) {
+    return http({
+      url: `/api/users/${data.id}`,
+      method: 'put',
+      data
+    })
+  },
+  deleteUser (data) {
+    return http({
+      url: `/api/users/${data.id}`,
+      method: 'delete',
+      data
+    })
   }
 }

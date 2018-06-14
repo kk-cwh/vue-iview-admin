@@ -22,19 +22,26 @@
 
         <Modal v-model="modal1" title="用户信息" @on-ok="ok" @on-cancel="cancel">
             <Form :model="editRow" label-position="right" :label-width="100">
-                <FormItem label="姓名">
-                    <Input v-model="editRow.name"></Input>
+                <FormItem label="用户名">
+                    <Input v-model="editRow.name" ></Input>
                 </FormItem>
                 <FormItem label="邮箱">
-                    <Input v-model="editRow.email"></Input>
+                    <Input v-model="editRow.email" ></Input>
                 </FormItem>
-                <FormItem label="头像">
-                    <Input v-model="editRow.avatar"></Input>
+                <FormItem label="昵称">
+                    <Input v-model="editRow.nickname" ></Input>
                 </FormItem>
+                <FormItem label="网站地址">
+                    <Input v-model="editRow.website" ></Input>
+                </FormItem>
+                <FormItem label="描述">
+                    <Input v-model="editRow.description"></Input>
+                </FormItem>
+
             </Form>
         </Modal>
 
-        <Modal v-model="modal2" title="新增用户" @on-ok="ok" @on-cancel="cancel" width="480">
+        <Modal v-model="showAdd" title="新增用户" @on-ok="ok" @on-cancel="cancel" width="480">
             <Form :model="addRow" label-position="right" :label-width="140">
                 <FormItem label="姓名">
                     <Input v-model="addRow.name" style="width:200px"></Input>
@@ -42,8 +49,20 @@
                 <FormItem label="邮箱">
                     <Input v-model="addRow.email" style="width:200px"></Input>
                 </FormItem>
-                <FormItem label="头像">
-                    <Input v-model="addRow.avatar" style="width:200px"></Input>
+                <FormItem label="密码">
+                    <Input v-model="addRow.password" style="width:200px"></Input>
+                </FormItem>
+                <FormItem label="确认密码">
+                    <Input v-model="addRow.password_confirm" style="width:200px"></Input>
+                </FormItem>
+                <FormItem label="昵称">
+                    <Input v-model="addRow.nickname" style="width:200px"></Input>
+                </FormItem>
+                <FormItem label="网站地址">
+                    <Input v-model="addRow.website" style="width:200px"></Input>
+                </FormItem>
+                <FormItem label="描述">
+                    <Input v-model="addRow.description" style="width:200px"></Input>
                 </FormItem>
             </Form>
             <div slot="footer" style="color:#f60;text-align:center">
@@ -61,7 +80,7 @@ export default {
       query: "",
       total: 0,
       modal1: false,
-      modal2: false,
+      showAdd: false,
       addRow: {},
       editRow: {},
       columns: [
@@ -225,13 +244,27 @@ export default {
       this.modal1 = true;
       this.$Message.info("当前查看索引" + index);
       this.editRow = this.userDatas[index];
+      console.log(this.editRow);
     },
     selectAlldata(datass) {
       this.$Message.success("选择了全部");
       console.log(datass);
     },
-    ok() {
-      console.log("ok");
+    async ok() {
+      try {
+        await this.$store.dispatch("AddUser", this.addRow);
+        this.showAdd = false;
+      } catch (error) {
+        const response = error.response;
+        if (response) {
+          if (response.status === 401) {
+            this.$Message.error("你没有权限!");
+          }
+          if (response.status === 500) {
+            this.$Message.error("系统繁忙，请稍后再试!");
+          }
+        }
+      }
     },
     cancel() {
       console.log("cancel");
@@ -240,7 +273,7 @@ export default {
       this.queryList();
     },
     toAdd() {
-      this.modal2 = true;
+      this.showAdd = true;
     }
   }
 };

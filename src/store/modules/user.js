@@ -83,6 +83,9 @@ const user = {
     GetUserList: ({commit}) => {
       return api.getUserList()
     },
+    AddUser: ({commit}, data) => {
+      return api.addUser(data)
+    },
     // 退出登录
     LogOut ({ commit }) {
       return new Promise(resolve => {
