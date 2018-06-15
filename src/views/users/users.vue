@@ -7,35 +7,35 @@
             <Col :xs="{ span: 14, offset: 2 }" :sm="{ span: 8, offset: 8}" :md="{ span: 6, offset: 10 }" :lg="{ span: 4, offset: 12 }">
             <Form label-position="right" :label-width="60">
                 <FormItem label="用户名:" class="">
-                    <Input type="text" v-model="query" placeholder="Enter user name"></Input>
+                    <Input type="text" v-model="query.name" placeholder="Enter user name"></Input>
                 </FormItem>
             </Form>
             </Col>
             <Col span="4">
-            <Button type="primary" @click="toQuery">查询</Button>
+            <Button type="primary" @click="toQuery" :loading="queryLoading">查询</Button>
             </Col>
         </Row>
- 
-            <Table border ref="selection"  :columns="columns" :data="userDatas" stripe @on-select-all="selectAlldata"></Table>
-       
-            <Page :total="total" class-name="margin-top-10" @on-page-size-change="pageSizeChange" @on-change="pageChange" size="small" show-total show-elevator show-sizer :page-size="10" class="margin-top-10"></Page>
-       
-        <Modal v-model="modal1" title="用户信息">
-            <Form :model="editRow" label-position="right" :label-width="100">
-                <FormItem label="用户名">
-                    <Input v-model="editRow.name"></Input>
+
+        <Table :loading="queryLoading" border ref="selection" :columns="columns" :data="userDatas" stripe @on-select-all="selectAlldata"></Table>
+
+        <Page :total="total" class-name="margin-top-10" @on-page-size-change="pageSizeChange" @on-change="pageChange" size="small" show-total show-elevator show-sizer :page-size="10" class="margin-top-10"></Page>
+
+        <Modal v-model="showEdit" title="编辑用户信息" @on-ok="toEdit" @on-cancel="cancel" width="480">
+            <Form :model="editRow" ref="editFormValidate" label-position="right" :label-width="140">
+                <FormItem label="用户名" prop="name">
+                    <Input v-model="editRow.name" style="width:200px" disabled></Input>
                 </FormItem>
-                <FormItem label="邮箱">
-                    <Input v-model="editRow.email"></Input>
+                <FormItem label="邮箱" prop="email" :rules="{ required: true, message: '请输入邮箱地址', trigger: 'blur' }">
+                    <Input v-model="editRow.email" style="width:200px"></Input>
                 </FormItem>
-                <FormItem label="昵称">
-                    <Input v-model="editRow.nickname"></Input>
+                <FormItem label="昵称" prop="nickname">
+                    <Input v-model="editRow.nickname" style="width:200px"></Input>
                 </FormItem>
                 <FormItem label="网站地址">
-                    <Input v-model="editRow.website"></Input>
+                    <Input v-model="editRow.website" style="width:200px"></Input>
                 </FormItem>
                 <FormItem label="描述">
-                    <Input v-model="editRow.description"></Input>
+                    <Input v-model="editRow.description" style="width:200px" type="textarea" :autosize="{minRows: 2,maxRows: 4}"></Input>
                 </FormItem>
 
             </Form>
@@ -98,12 +98,13 @@ export default {
             }
         };
         return {
+            queryLoading: false,
             loading: false,
-            query: "",
+            query: { name: '' },
             page: 1,
             per_page: 10,
             total: 0,
-            modal1: false,
+            showEdit: false,
             showAdd: false,
             addRow: {},
             editRow: {},
@@ -183,25 +184,6 @@ export default {
                                 "Button",
                                 {
                                     props: {
-                                        type: "success",
-                                        icon: "eye",
-                                        size: "small"
-                                    },
-                                    style: {
-                                        marginRight: "5px"
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show(params.index);
-                                        }
-                                    }
-                                },
-                                "查看"
-                            ),
-                            h(
-                                "Button",
-                                {
-                                    props: {
                                         type: "error",
                                         icon: "compose",
                                         size: "small"
@@ -211,7 +193,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.show(params.index);
+                                            this.showEditModal(params.index);
                                         }
                                     }
                                 },
@@ -260,11 +242,15 @@ export default {
         },
         async queryList() {
             try {
+                this.queryLoading = true
+
                 const data = {
                     page: this.page,
-                    per_page: this.per_page
+                    per_page: this.per_page,
+                    name: this.query.name
                 }
                 const result = await this.$store.dispatch("GetUserList", data);
+                this.queryLoading = false
                 this.userDatas = result.data;
                 this.total = result.meta.total;
             } catch (error) {
@@ -283,8 +269,8 @@ export default {
             this.$refs.selection.selectAll(status);
         },
         changeStatus(index) {
-            this.userDatas[index].status = this.userDatas[index].status === 1 ? 0 : 1;
-            //  console.log( this.userDatas)
+            const data = { id: this.userDatas[index].id, status: this.userDatas[index].status === 1 ? 0 : 1 }
+            this.saveEdit(data);
         },
         show(index) {
             this.modal1 = true;
@@ -330,19 +316,31 @@ export default {
             }
 
         },
-        showEditModal() {
-
+        showEditModal(index) {
+            this.showEdit = true;
+            this.editRow = { ...this.userDatas[index] };
         },
-        toEdit(name) {
-            this.$refs[name].validate((valid) => {
-                if (valid) {
-                    this.saveEdit()
-                } else {
-                    this.$Message.error('Fail!');
+        toEdit() {
+            this.saveEdit(this.editRow)
+        },
+        async saveEdit(data) {
+            try {
+                this.loading = true
+                await this.$store.dispatch("UpdateUser", data);
+                this.loading = false
+                this.$Message.success("修改成功!");
+                this.toQuery()
+            } catch (error) {
+                const response = error.response;
+                if (response) {
+                    if (response.status === 401) {
+                        this.$Message.error("你没有权限!");
+                    }
+                    if (response.status === 500) {
+                        this.$Message.error("系统繁忙，请稍后再试!");
+                    }
                 }
-            })
-        },
-        saveEditInfo() {
+            }
 
         },
         handleReset(name) {
@@ -362,6 +360,6 @@ export default {
 
 <style lang="less" scoped>
 .margin-top-10 {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 </style>
