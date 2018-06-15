@@ -80,8 +80,8 @@ const user = {
         })
       })
     },
-    GetUserList: ({commit}) => {
-      return api.getUserList()
+    GetUserList: ({commit}, data) => {
+      return api.getUserList(data)
     },
     AddUser: ({commit}, data) => {
       return api.addUser(data)
