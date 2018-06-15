@@ -6,6 +6,13 @@
             <Row class-name="home-page-row1" :gutter="10">
                 <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
                 <Card>
+                    <p slot="title">
+                        <Icon type="ios-film-outline"></Icon>
+                    </p>
+                    <a href="#" slot="extra" @click="toEdit">
+                        <Icon type="compose"></Icon>
+                        修改头像
+                    </a>
                     <Row type="flex" class="user-info">
                         <Col span="8">
                         <Row class-name="made-child-con-middle" type="flex" align="middle">
@@ -32,7 +39,7 @@
                         <Col span="8">
                         <p class="notwrap">上次登录地点:</p>
                         </Col>
-                        <Col span="16" class="padding-left-8" >{{area}}</Col>
+                        <Col span="16" class="padding-left-8">{{area}}</Col>
                     </Row>
                 </Card>
                 </Col>
@@ -41,7 +48,14 @@
             </Col>
 
         </Row>
-
+        <Modal v-model="showEdit" title="上传头像" @on-ok="ok" @on-cancel="cancel" width="480">
+            <Upload multiple type="drag" action="//jsonplaceholder.typicode.com/posts/">
+                <div style="padding: 20px 0">
+                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                    <p>Click or drag files here to upload</p>
+                </div>
+            </Upload>
+        </Modal>
     </div>
 </template>
 
@@ -54,27 +68,36 @@ export default {
     components: {
 
     },
-    data () {
+    data() {
         return {
+            showEdit: false,
             lastLoginTime: '2018-01-02 12:34:23',
             area: '北京'
         };
     },
     computed: {
-           ...mapGetters([
-      'avatar',
-      'name',
-      // ...
-    ]),
-        avatorPath () {
+        ...mapGetters([
+            'avatar',
+            'name',
+            // ...
+        ]),
+        avatorPath() {
             return localStorage.avatorImgPath;
         },
-        userName () {
+        userName() {
             return Cookies.get('user');
         }
     },
     methods: {
-
+        toEdit() {
+            this.showEdit = true
+        },
+        cancel() {
+            console.log(this.showEdit)
+        },
+        ok() {
+            console.log(this.showEdit)
+        }
     }
 };
 </script>
