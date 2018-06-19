@@ -16,7 +16,7 @@
             </Col>
         </Row>
 
-        <Table :loading="queryLoading" border ref="selection" :columns="columns" :data="userDatas" stripe @on-select-all="selectAlldata"></Table>
+        <Table :loading="queryLoading" border ref="selection" :columns="columns" :data="tableDatas" stripe @on-select-all="selectAlldata"></Table>
 
         <Page :total="total" class-name="margin-top-10" @on-page-size-change="pageSizeChange" @on-change="pageChange" size="small" show-total show-elevator show-sizer :page-size="10" class="margin-top-10"></Page>
 
@@ -203,7 +203,7 @@ export default {
                     }
                 }
             ],
-            userDatas: [],
+            tableDatas: [],
 
             ruleValidate: {
                 name: [
@@ -251,7 +251,7 @@ export default {
                 }
                 const result = await this.$store.dispatch("GetUserList", data);
                 this.queryLoading = false
-                this.userDatas = result.data;
+                this.tableDatas = result.data;
                 this.total = result.meta.total;
             } catch (error) {
                 const response = error.response;
@@ -265,22 +265,19 @@ export default {
                 }
             }
         },
-        handleSelectAll(status) {
-            this.$refs.selection.selectAll(status);
-        },
         changeStatus(index) {
-            const data = { id: this.userDatas[index].id, status: this.userDatas[index].status === 1 ? 0 : 1 }
+            const data = { id: this.tableDatas[index].id, status: this.tableDatas[index].status === 1 ? 0 : 1 }
             this.saveEdit(data);
         },
         show(index) {
             this.modal1 = true;
             this.$Message.info("当前查看索引" + index);
-            this.editRow = this.userDatas[index];
+            this.editRow = this.tableDatas[index];
             console.log(this.editRow);
         },
-        selectAlldata(datass) {
+        selectAlldata(datas) {
             this.$Message.success("选择了全部");
-            console.log(datass);
+            console.log(datas);
         },
         showAddModal() {
             this.showAdd = true;
@@ -318,7 +315,7 @@ export default {
         },
         showEditModal(index) {
             this.showEdit = true;
-            this.editRow = { ...this.userDatas[index] };
+            this.editRow = { ...this.tableDatas[index] };
         },
         toEdit() {
             this.saveEdit(this.editRow)

@@ -89,6 +89,42 @@ const user = {
     UpdateUser: ({commit}, data) => {
       return api.updateUser(data)
     },
+    GetTagList: ({commit}, data) => {
+      return api.getTagList(data)
+    },
+    AddTag: ({commit}, data) => {
+      return api.addTag(data)
+    },
+    UpdateTag: ({commit}, data) => {
+      return api.updateTag(data)
+    },
+    GetCategoryList: ({commit}, data) => {
+      return api.getCategoryList(data)
+    },
+    AddCategory: ({commit}, data) => {
+      return api.addCategory(data)
+    },
+    UpdateCategory: ({commit}, data) => {
+      return api.updateCategory(data)
+    },
+    GetLinkList: ({commit}, data) => {
+      return api.getLinkList(data)
+    },
+    AddLink: ({commit}, data) => {
+      return api.addLink(data)
+    },
+    UpdateLink: ({commit}, data) => {
+      return api.updateLink(data)
+    },
+    GetArticleList: ({commit}, data) => {
+      return api.getArticleList(data)
+    },
+    AddArticle: ({commit}, data) => {
+      return api.addArticle(data)
+    },
+    UpdateArticle: ({commit}, data) => {
+      return api.updateArticle(data)
+    },
     // 退出登录
     LogOut ({ commit }) {
       return new Promise(resolve => {
