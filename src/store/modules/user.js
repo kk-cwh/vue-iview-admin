@@ -119,6 +119,12 @@ const user = {
     GetArticleList: ({commit}, data) => {
       return api.getArticleList(data)
     },
+    GetAllTags: ({commit}, data) => {
+      return api.getTagList(data)
+    },
+    GetAllCategory: ({commit}, data) => {
+      return api.getCategoryList(data)
+    },
     AddArticle: ({commit}, data) => {
       return api.addArticle(data)
     },

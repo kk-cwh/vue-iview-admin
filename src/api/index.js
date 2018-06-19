@@ -51,6 +51,13 @@ export default {
       params
     })
   },
+  getAllTags (params) {
+    return http({
+      url: '/api/tags_all',
+      method: 'get',
+      params
+    })
+  },
   addTag (data) {
     return http({
       url: '/api/tags',
