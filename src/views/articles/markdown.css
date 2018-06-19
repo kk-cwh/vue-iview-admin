@@ -2,7 +2,7 @@
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   color: #636b6f;
-  overflow: hidden;
+  /* overflow: hidden; */
   line-height: 2;
   word-wrap: break-word;
 }

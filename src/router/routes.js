@@ -95,8 +95,9 @@ export const asyncRouterMap = [
     meta: { title: '', icon: 'android-menu' },
     component: layout,
     children: [
-      { path: 'index', meta: { title: '文章列表', icon: 'document-text' }, name: 'articles_index', component: () => import('@/views/articles/articles') }
-    //   { path: 'create', meta: { title: '创建', icon: 'document-text' }, name: 'articles_addindex', component: () => import('@/views/articles/add-article') }
+      { path: 'index', meta: { title: '文章列表', icon: 'document-text' }, name: 'articles_index', component: () => import('@/views/articles/articles') },
+      { path: 'create', meta: { title: '创建文章', icon: 'document-text' }, hidden: true, name: 'articles_add', component: () => import('@/views/articles/add-article') }
+    //   { path: 'create2', meta: { title: '创建2', icon: 'document-text' }, hidden: true, name: 'articles_add2', component: () => import('@/views/articles/add-md') }
     ]
   },
   {

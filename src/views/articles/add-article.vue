@@ -1,6 +1,6 @@
 <style>
-/* @import "simplemde/dist/simplemde.min.css";
-@import "highlight.js/styles/atom-one-dark.css"; */
+@import "simplemde/dist/simplemde.min.css";
+@import "highlight.js/styles/atom-one-dark.css";
 @import "./markdown.css";
 .add-new-tag-con {
   margin-top: 20px;
@@ -40,6 +40,14 @@
   border-top: 1px dashed #dbdddf;
   padding: 12px 0 0 0;
 }
+
+.markdown-editor .CodeMirror {
+  height: 500px;
+}
+.CodeMirror-fullscreen {
+  z-index: 901;
+}
+
 </style>
 
 <template>
@@ -50,17 +58,17 @@
                 <Row>
                     <Col span="16" offset="4">
                     <Form ref="formValidate" :label-width="60">
-                        <FormItem label="标题" prop="name">
+                        <FormItem label="标题" prop="title">
                             <Row>
                                 <Col span="18">
-                                <Input placeholder="Enter 文章标题"></Input>
+                                <Input placeholder="Enter 文章标题" v-model="addRow.title"></Input>
                                 </Col>
                             </Row>
                         </FormItem>
-                        <FormItem label="副标题" prop="subname">
+                        <FormItem label="副标题" prop="subtitle">
                             <Row>
                                 <Col span="18">
-                                <Input placeholder="Enter 文章副标题"></Input>
+                                <Input placeholder="Enter 文章副标题" v-model="addRow.subtitle"></Input>
                                 </Col>
                             </Row>
                         </FormItem>
@@ -68,7 +76,7 @@
                         <FormItem label="页面图片" prop="imageurl">
                             <Row>
                                 <Col span="18">
-                                <Input placeholder="可粘贴外部链接"> </Input>
+                                <Input placeholder="可粘贴外部链接" v-model="addRow.page_image"> </Input>
                                 </Col>
                                 <Col span="6">
                                 <Upload action="//jsonplaceholder.typicode.com/posts/">
@@ -86,7 +94,14 @@
                     <Icon type="ios-loop-strong"></Icon>
                     Change
                 </a> -->
-                <textarea id="editor"></textarea>
+                <markdown-editor v-model="content" :highlight="true" preview-class="markdown" ref="markdownEditor"></markdown-editor>
+
+                <!-- <div class="button-wrap">
+      <button type="button" @click="handleOutputMARKDOWN">输出MARKDOWN</button>
+      <button type="button" @click="handleOutputHTML">输出HTML</button>
+      <pre v-text="output"></pre>
+      <div v-html="output" v-show="type === 'html'" class="markdown"></div>
+    </div> -->
             </Card>
 
             </Col>
@@ -134,12 +149,14 @@
                         <Icon type="navicon-round"></Icon>
                         文章分类
                     </p>
-
-                    <CheckboxGroup v-model="offenUsedClassSelected" @on-change="setClassificationInOffen">
-                        <span v-for="item in offenUsedClass" :key="item.title">
-                            <Checkbox :label="item.title">{{ item.title }}</Checkbox>
+                    <Select v-model="categoryId" size="small" placeholder="请选择分类">
+                        <Option v-for="item in offenUsedClass" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                    </Select>
+                    <!-- <CheckboxGroup v-model="offenUsedClassSelected" @on-change="setClassificationInOffen">
+                        <span v-for="item in offenUsedClass" :key="item.id">
+                            <Checkbox :label="item.id">{{ item.name }}</Checkbox>
                         </span>
-                    </CheckboxGroup>
+                    </CheckboxGroup> -->
 
                 </Card>
             </div>
@@ -152,7 +169,7 @@
                     </p>
                     <Row>
                         <Col span="18">
-                        <Select v-model="model10" multiple size="small">
+                        <Select v-model="tagIds" multiple size="small">
                             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                         </Col>
@@ -183,138 +200,157 @@
     </div>
 </template>
 <script>
-// import SimpleMDE from "simplemde";
 
-// import emojione from "emojione";
-// import marked from "marked";
-// import hljs from "highlight.js";
+import markdownEditor from 'vue-simplemde/src/markdown-editor';
+import hljs from "highlight.js";
+window.hljs = hljs;
 
 export default {
-  data() {
-    return {
-      addingNewTag: false,
-      newTagName: "",
-      publishTime: "",
-      publishTimeType: "immediately",
-      editPublishTime: false, // 是否正在编辑发布时间,
-      publishLoading:false,
-      offenUsedClassSelected: [], // 常用目录选中的目录
-      classificationFinalSelected: [], // 最后实际选择的目录
-      simplemde: "",
-      cityList: [
-        {
-          value: "New York",
-          label: "New York"
-        },
-        {
-          value: "London",
-          label: "London"
-        },
-        {
-          value: "Sydney",
-          label: "Sydney"
-        },
-        {
-          value: "Ottawa",
-          label: "Ottawa"
-        },
-        {
-          value: "Paris",
-          label: "Paris"
-        },
-        {
-          value: "Canberra",
-          label: "Canberra"
-        }
-      ],
-      model10: [],
-      offenUsedClass: []
-    };
-  },
-  mounted() {
-    let self = this;
+    components: {
+        markdownEditor,
+    },
+    data() {
+        return {
+            addRow: {},
+            addingNewTag: false,
+            newTagName: "",
+            publishTime: "",
+            publishTimeType: "immediately",
+            editPublishTime: false, // 是否正在编辑发布时间,
+            publishLoading: false,
+            categoryId: '', // 常用目录选中的目录
+            classificationFinalSelected: [], // 最后实际选择的目录
+            content: '',
+            output: '',
+            type: 'html',
+            cityList: [
+                {
+                    value: "New York",
+                    label: "New York"
+                },
+                {
+                    value: "London",
+                    label: "London"
+                },
+                {
+                    value: "Sydney",
+                    label: "Sydney"
+                },
+                {
+                    value: "Ottawa",
+                    label: "Ottawa"
+                },
+                {
+                    value: "Paris",
+                    label: "Paris"
+                },
+                {
+                    value: "Canberra",
+                    label: "Canberra"
+                }
+            ],
+            tagIds: [],
+            offenUsedClass: []
+        };
+    },
+    mounted() {
 
-    this.simplemde = new SimpleMDE({
-      element: document.getElementById("editor"),
-      autoDownloadFontAwesome: true,
-      forceSync: true,
-      previewRender(plainText, preview) {
-        preview.className += " markdown";
-
-        return self.parse(plainText);
-      }
-
-    });
-    this.offenUsedClass = [
-      {
-        title: "vue实例"
-      },
-      {
-        title: "生命周期"
-      },
-      {
-        title: "模板语法"
-      },
-      {
-        title: "插值"
-      },
-      {
-        title: "缩写"
-      }
-    ];
-  },
-  computed: {},
-  methods: {
-    parse(content) {
-      marked.setOptions({
-        highlight: code => {
-          return hljs.highlightAuto(code).value;
+        this.offenUsedClass = [
+            {
+                id: 1,
+                name: "vue实例"
+            },
+            {                id: 2,
+                name: "生命周期"
+            },
+            {
+                id: 3,
+                name: "模板语法"
+            },
+        ];
+    },
+    computed: {
+        simplemde() {
+            return this.$refs.markdownEditor.simplemde;
         },
-        sanitize: true
-      });
 
-      return emojione.toImage(marked(content));
     },
-    setClassificationInOffen(selectedArray) {
-      this.classificationFinalSelected = selectedArray;
-    },
-    handleAddNewTag() {
-      this.addingNewTag = !this.addingNewTag;
-    },
-    createNewTag() {
-      if (this.newTagName.length !== 0) {
-        this.addingNewTag = false;
-        setTimeout(() => {
-          this.newTagName = "";
-        }, 200);
-      } else {
-        this.$Message.error("请输入标签名");
-      }
-    },
-    cancelCreateNewTag() {
-      this.newTagName = "";
-      this.addingNewTag = false;
-    },
-    handleEditPublishTime() {
-      this.editPublishTime = !this.editPublishTime;
-    },
-    setPublishTime(datetime) {
-      this.publishTime = datetime;
-    },
-    handleSavePublishTime() {
-      this.publishTimeType = "timing";
-      this.editPublishTime = false;
-    },
-    cancelEditPublishTime() {
-      this.publishTimeType = "immediately";
-      this.editPublishTime = false;
-    },
-    handlePreview() {
-      this.$store.state.app.md = this.simplemde.value();
-       this.$router.push({name: "preview_article"});
-    },
-    handlePublish() { this.publishLoading = true;},
-    handleSaveDraft() {}
-  }
+    methods: {
+        setClassificationInOffen(selectedArray) {
+            this.classificationFinalSelected = selectedArray;
+        },
+        handleAddNewTag() {
+            this.addingNewTag = !this.addingNewTag;
+        },
+        createNewTag() {
+            if (this.newTagName.length !== 0) {
+                this.addingNewTag = false;
+                setTimeout(() => {
+                    this.newTagName = "";
+                }, 200);
+            } else {
+                this.$Message.error("请输入标签名");
+            }
+        },
+        cancelCreateNewTag() {
+            this.newTagName = "";
+            this.addingNewTag = false;
+        },
+        handleEditPublishTime() {
+            this.editPublishTime = !this.editPublishTime;
+        },
+        setPublishTime(datetime) {
+            this.publishTime = datetime;
+        },
+        handleSavePublishTime() {
+            this.publishTimeType = "timing";
+            this.editPublishTime = false;
+        },
+        cancelEditPublishTime() {
+            this.publishTimeType = "immediately";
+            this.editPublishTime = false;
+        },
+        handlePreview() {
+            this.$store.state.app.md = this.simplemde.value();
+            this.$router.push({ name: "preview_article" });
+        },
+       async handlePublish() {
+
+            try {
+                this.publishLoading = true
+                const data = {
+                    ...this.addRow,
+                    content: this.content,
+                    category_id: this.categoryId,
+                    tag_ids: this.tagIds
+
+                }
+                await this.$store.dispatch("AddArticle", data);
+                this.publishLoading = false
+
+                this.$Message.success("添加成功!");
+
+            } catch (error) {
+                const response = error.response;
+                if (response) {
+                    if (response.status === 401) {
+                        this.$Message.error("你没有权限!");
+                    }
+                    if (response.status === 500) {
+                        this.$Message.error("系统繁忙，请稍后再试!");
+                    }
+                }
+            }
+        },
+        handleSaveDraft() { },
+        handleOutputHTML() {
+            this.type = 'html';
+            this.output = this.simplemde.markdown(this.content);
+        },
+        handleOutputMARKDOWN() {
+            this.type = 'markdown';
+            this.output = this.content;
+        },
+    }
 };
 </script>

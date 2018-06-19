@@ -2,7 +2,7 @@
     <div>
         <Row :gutter="16">
             <Col span="4">
-            <Button @click="showAddModal" type="primary">创建文章</Button>
+            <Button @click="toRoute('articles_add')" type="primary">创建文章</Button>
             </Col>
             <Col :xs="{ span: 14, offset: 2 }" :sm="{ span: 8, offset: 8}" :md="{ span: 6, offset: 10 }" :lg="{ span: 4, offset: 12 }">
             <Form label-position="right" :label-width="60">
@@ -106,7 +106,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.showEditModal(params.index);
+                                            this.toEditView(params.index);
                                         }
                                     }
                                 },
@@ -178,45 +178,10 @@ export default {
             this.$Message.success("选择了全部");
             console.log(datas);
         },
-        showAddModal() {
-            this.showAdd = true;
+        toRoute(name){
+               this.$router.push({name})
         },
-        toAdd(name) {
-            this.$refs[name].validate((valid) => {
-                if (valid) {
-                    let data = {...this.addRow}
-                    data.status = data.status === true ? 1:0;
-                    this.add(data)
-                } else {
-                    this.$Message.error('Fail!');
-                }
-
-            })
-        },
-        async add(data) {
-            try {
-                this.loading = true
-                await this.$store.dispatch("AddLink", data);
-                this.loading = false
-                this.showAdd = false;
-                this.$Message.success("添加成功!");
-                this.toQuery()
-            } catch (error) {
-                const response = error.response;
-                if (response) {
-                    if (response.status === 401) {
-                        this.$Message.error("你没有权限!");
-                    }
-                    if (response.status === 500) {
-                        this.$Message.error("系统繁忙，请稍后再试!");
-                    }
-                }
-            }
-
-        },
-        showEditModal(index) {
-            this.showEdit = true;
-            this.editRow = { ...this.tableDatas[index] };
+        toEditView(index){
         },
         toEdit() {
             this.saveEdit(this.editRow)
@@ -224,7 +189,7 @@ export default {
         async saveEdit(data) {
             try {
                 this.loading = true
-                await this.$store.dispatch("UpdateLink", data);
+                await this.$store.dispatch("UpdateArticle", data);
                 this.loading = false
                 this.$Message.success("修改成功!");
                 this.toQuery()
