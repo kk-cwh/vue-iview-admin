@@ -28,7 +28,7 @@
                 <FormItem label="链接" prop="link" :rules="{ required: true, message: '请输入链接地址', trigger: 'blur' }">
                     <Input v-model="editRow.link" style="width:200px"></Input>
                 </FormItem>
-                <FormItem label="图片" prop="image">
+                <FormItem label="图片地址" prop="image">
                     <Input v-model="editRow.image" style="width:200px"></Input>
                 </FormItem>
 
@@ -43,7 +43,7 @@
                 <FormItem label="链接" prop="link">
                     <Input v-model="addRow.link" style="width:200px"></Input>
                 </FormItem>
-                <FormItem label="图片" prop="image">
+                <FormItem label="图片地址" prop="image">
                     <Input v-model="addRow.image" style="width:200px"></Input>
                 </FormItem>
                 <FormItem label="是否开启" prop="status">
@@ -88,14 +88,14 @@ export default {
                     key: "id"
                 },
                 {
-                    title: "头像",
+                    title: "图片",
                     width: 80,
                     key: "image",
                     render: (h, params) => {
                         return h("div", [
                             h("Avatar", {
                                 props: {
-                                    src: params.row.avatar,
+                                    src: params.row.image,
                                     shape: "square",
                                     size: "large"
                                 }
