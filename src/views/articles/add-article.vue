@@ -51,7 +51,7 @@
 
 <template>
     <div>
-        <Form ref="formValidate" :label-width="60">
+        <Form ref="formValidate" :model="addRow" :label-width="60">
             <Row :gutter="32">
                 <Col span="16">
                 <Card>
@@ -61,7 +61,7 @@
                         <FormItem label="标题" prop="title" :rules="{ required: true, message: '请输入标题', trigger: 'blur' }">
                             <Row>
                                 <Col span="18">
-                                <Input placeholder="Enter 文章标题" v-model="addRow.title"></Input>
+                                <Input placeholder="Enter 文章标题" name="title" v-model="addRow.title"></Input>
                                 </Col>
                             </Row>
                         </FormItem>
@@ -79,7 +79,7 @@
                                 <Input placeholder="可粘贴外部链接" v-model="addRow.page_image"> </Input>
                                 </Col>
                                 <Col span="6">
-                                <Upload action="/api/upload">
+                                <Upload action="/api/upload" :on-success="uploadSuccess">
                                     <Button type="success">上传图片</Button>
                                 </Upload>
                                 </Col>
@@ -129,14 +129,14 @@
                         </transition>
                     </p>
                     <Row class="margin-top-10 publish-button-con">
-                        <span class="publish-button">
+                        <!-- <span class="publish-button">
                             <Button @click="handlePreview" icon="eye">预览</Button>
-                        </span>
+                        </span> -->
                         <span class="publish-button">
                             <Button @click="toPublish('formValidate')" :loading="publishLoading" icon="ios-checkmark" style="width:90px;" type="primary">发布</Button>
                         </span>
                         <span class="publish-button">
-                            <Button @click="handleSaveDraft">保存草稿</Button>
+                            <Button @click="handleSaveDraft('formValidate')">保存草稿</Button>
                         </span>
 
                     </Row>
@@ -329,7 +329,9 @@ export default {
                         ...this.addRow,
                         content: this.content,
                         category_id: this.categoryId,
-                        tag_ids: this.tagIds
+                        tag_ids: this.tagIds,
+                        published_at:this.publishTime,
+                        status: this.publishTime? 0:1
                     }
                     this.handlePublish(data)
                 } else {
@@ -341,13 +343,13 @@ export default {
         async handlePublish(data) {
 
             try {
+                this.$Spin.show();
                 this.publishLoading = true
-
                 await this.$store.dispatch("AddArticle", data);
                 this.publishLoading = false
-
-                this.$Message.success("添加成功!");
-
+                this.$Spin.hide();
+                this.$Message.success("保存成功!");
+                this.$router.push({name:'articles_index'})
             } catch (error) {
                 const response = error.response;
                 if (response) {
@@ -360,7 +362,23 @@ export default {
                 }
             }
         },
-        handleSaveDraft() { },
+        handleSaveDraft(name) {
+             this.$refs[name].validate((valid) => {
+                if (valid) {
+                    const data = {
+                        ...this.addRow,
+                        content: this.content,
+                        category_id: this.categoryId,
+                        tag_ids: this.tagIds,
+                        status: 0,
+                    }
+                    this.handlePublish(data)
+                } else {
+                    this.$Message.error('请填写必填内容!');
+                }
+
+            })
+         },
         handleOutputHTML() {
             this.type = 'html';
             this.output = this.simplemde.markdown(this.content);
@@ -369,6 +387,11 @@ export default {
             this.type = 'markdown';
             this.output = this.content;
         },
+        uploadSuccess( response, file, fileList){
+// console.log(response,file,fileList)
+this.$set(this.addRow, 'page_image', response.data)
+
+        }
     }
 };
 </script>

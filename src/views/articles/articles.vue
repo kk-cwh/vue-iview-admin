@@ -69,10 +69,10 @@ export default {
                                 },
                                 scopedSlots: {
                                     open: () => {
-                                        return "启用";
+                                        return "on";
                                     },
                                     close: () => {
-                                        return "禁用";
+                                        return "off";
                                     }
                                 },
                                 on: {
