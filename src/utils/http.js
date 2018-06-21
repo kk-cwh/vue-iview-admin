@@ -17,7 +17,7 @@ const http = axios.create({
 // 请求拦截
 http.interceptors.request.use(config => {
   if (getToken()) {
-    config.headers['X-Token'] = getToken() // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+    config.headers['Authorization'] = getToken() // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
   }
   return config
 }, err => {
@@ -27,7 +27,6 @@ http.interceptors.request.use(config => {
 
 // 响应拦截
 http.interceptors.response.use(response => {
-  console.log(response)
   /**
    * 通过response自定义errCode来标示请求状态
    */

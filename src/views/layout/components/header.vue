@@ -9,15 +9,15 @@
       </Breadcrumb>
     </div>
     <div class="header-avatar">
-      <Dropdown>
+      <Dropdown  @on-click="userCommand">
         <a href="javascript:void(0)">
           <!-- 登陆用户 名称 和头像-->
           <span> {{name}} </span>
           <Icon type="arrow-down-b"></Icon>
         </a> 
         <DropdownMenu slot="list">
-          <DropdownItem>首页</DropdownItem>
-          <DropdownItem divided>退出</DropdownItem>
+          <DropdownItem name="home">首页</DropdownItem>
+          <DropdownItem divided name="logout">退出</DropdownItem>
         </DropdownMenu>
       </Dropdown>  <Avatar :src="avatar" /> &nbsp;
  
@@ -63,7 +63,8 @@ export default {
     },
     userCommand(command) {
       switch (command) {
-        case "usercenter":
+        case "home":
+         this.$router.push({ name: "home_index" });
           break;
         case "logout":
           this.$store.dispatch("LogOut").then(() => location.reload());
